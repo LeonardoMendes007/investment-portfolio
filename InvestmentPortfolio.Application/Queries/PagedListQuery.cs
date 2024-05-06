@@ -9,4 +9,9 @@ public class PagedListQuery
 {
     public int Page { get; set; }
     public int PageSize { get; set; }
+
+    public string GetKey()
+    {
+        return $"p:{Page}&ps:{PageSize}";
+    }
 }

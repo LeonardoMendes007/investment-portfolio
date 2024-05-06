@@ -1,18 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using InvestmentPortfolio.Application.Commands.Product;
+using InvestmentPortfolio.Application.Mapper.AutoMapperConfig;
+using InvestmentPortfolio.Application.Services;
+using InvestmentPortfolio.Application.Services.Interfaces;
+using InvestmentPortfolio.Application.Validators.Product;
+using InvestmentPortfolio.Domain.Interfaces.Repositories;
+using InvestmentPortfolio.Domain.Interfaces.UnitOfWork;
+using InvestmentPortfolio.Infra.Persistence;
+using InvestmentPortfolio.Infra.Persistence.Repositories;
+using InvestmentPortfolio.Infra.Persistence.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using InvestmentPortfolio.Infra.Persistence;
-using InvestmentPortfolio.Application.Mapper.AutoMapperConfig;
-using InvestmentPortfolio.Domain.Interfaces.UnitOfWork;
-using InvestmentPortfolio.Infra.Persistence.UnitOfWork;
-using InvestmentPortfolio.Domain.Interfaces.Repositories;
-using InvestmentPortfolio.Infra.Persistence.Repositories;
-using InvestmentPortfolio.Application.Services.Interfaces;
-using InvestmentPortfolio.Application.Services;
-using FluentValidation;
-using InvestmentPortfolio.Application.Commands.Product;
-using Microsoft.Extensions.Caching.Distributed;
-using InvestmentPortfolio.Application.Validators.Product;
 
 namespace InvestmentPortfolio.CrossCutting.DependencyInjection;
 public static class DependencyInjection
@@ -22,28 +21,7 @@ public static class DependencyInjection
     {
         #region Banco de dados
         services.AddDbContext<InvestimentPortfolioDbContext>(options =>
-           options.UseSqlServer(configuration.GetConnectionString("InvestimentPortfolioDbConnection")));
-        #endregion
-
-        #region Cache
-        //var cacheConnection = configuration.GetConnectionString("CacheConnection");
-
-        //var cachingSettings = configuration.GetSection("CachingSettings");
-        //var absoluteExpirationRelativeToNow = cachingSettings.GetValue<int>("AbsoluteExpirationRelativeToNow");
-        //var slidingExpiration = cachingSettings.GetValue<int>("SlidingExpiration");
-
-        //services.AddStackExchangeRedisCache(o =>
-        //{
-        //    o.Configuration = cacheConnection;
-        //});
-
-        //var cacheEntryOptions = new DistributedCacheEntryOptions
-        //{
-        //    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(absoluteExpirationRelativeToNow),
-        //    SlidingExpiration = TimeSpan.FromMinutes(slidingExpiration)
-        //};
-
-        //services.AddSingleton<DistributedCacheEntryOptions>(cacheEntryOptions);
+           options.UseInMemoryDatabase(configuration.GetConnectionString("InvestimentPortfolioDbConnection")));
         #endregion
 
         #region MediatR

@@ -7,6 +7,7 @@ using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Queries.Product;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
+using InvestmentPortfolio.Domain.Entities.Product;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -23,8 +24,8 @@ public class ProductController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetAsync([FromRoute] Guid id)
+    [HttpGet("{id}", Name = "GetById")]
+    public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var productDetails = await _mediator.Send(new GetProductByIdQuery()
         {
@@ -65,7 +66,7 @@ public class ProductController : ControllerBase
 
         var productId = await _mediator.Send(createProductCommand);
 
-        return CreatedAtAction(nameof(GetAsync), new { productId }, ResponseBase.ResponseBaseFactory(HttpStatusCode.Created));
+        return CreatedAtRoute("GetById", new { id = productId }, ResponseBase.ResponseBaseFactory(HttpStatusCode.Created));
     }
 
     [HttpPut]
@@ -81,10 +82,9 @@ public class ProductController : ControllerBase
             ExpirationDate = productRequest.ExpirationDate,
             IsActive = productRequest.IsActive
         };
-
         await _mediator.Send(updateProductCommand);
 
-        return NoContent();
+        return Ok(ResponseBase.ResponseBaseFactory(HttpStatusCode.OK));
     }
 
 }

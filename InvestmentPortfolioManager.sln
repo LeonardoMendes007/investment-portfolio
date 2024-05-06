@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentPortfolio.CrossCu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentPortfolio.Infra", "InvestmentPortfolio.Infra\InvestmentPortfolio.Infra.csproj", "{31A11F35-0D23-47C1-A33D-BCDF411FF5D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D384E18F-58BC-4E5E-8606-E694A664DE44}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ADE44A0C-D569-4B64-B9E7-07A1BBCD375B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +46,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5C93CB9-1A1E-44D7-B427-D5FD8BA19859} = {D384E18F-58BC-4E5E-8606-E694A664DE44}
+		{0DA20A37-7EED-48FA-A47C-0DDB1D141881} = {D384E18F-58BC-4E5E-8606-E694A664DE44}
+		{77A28D30-45A1-4D0F-A287-470D717D94F2} = {D384E18F-58BC-4E5E-8606-E694A664DE44}
+		{080AEC17-3DAA-452C-B4F4-CCB33E6DEFB9} = {D384E18F-58BC-4E5E-8606-E694A664DE44}
+		{31A11F35-0D23-47C1-A33D-BCDF411FF5D1} = {D384E18F-58BC-4E5E-8606-E694A664DE44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49679441-BF4E-4A6D-B4DE-94FCEF73B582}
