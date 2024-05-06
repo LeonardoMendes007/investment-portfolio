@@ -86,6 +86,7 @@ public class CustomerService : ICustomerService
                 TransactionType = t.TransactionType,
                 TransactionTypeName = t.TransactionType == 0 ? "Buy" : "Sell",
                 Amount = t.PU * t.Quantity,
+                Quantity = t.Quantity,
                 Date = t.Date
             });
 

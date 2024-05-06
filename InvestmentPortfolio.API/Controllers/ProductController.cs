@@ -24,18 +24,18 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get([FromRoute] Guid id)
+    public async Task<IActionResult> GetAsync([FromRoute] Guid id)
     {
-        var movie = await _mediator.Send(new GetProductByIdQuery()
+        var productDetails = await _mediator.Send(new GetProductByIdQuery()
         {
             Id = id
         });
 
-        return Ok(ResponseBase<ProductDetails>.ResponseBaseFactory(movie, HttpStatusCode.OK));
+        return Ok(ResponseBase<ProductDetails>.ResponseBaseFactory(productDetails, HttpStatusCode.OK));
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll([FromQuery] PagedListQueryParams pagedListQueryParams)
+    public async Task<IActionResult> GetAllAsync([FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
         var getMoviesQuery = new GetProductQuery()
@@ -51,7 +51,7 @@ public class ProductController : ControllerBase
 
 
     [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateProductRequest productRequest)
+    public async Task<IActionResult> CreateAsync([FromBody] CreateProductRequest productRequest)
     {
 
         var createProductCommand = new CreateProductCommand()
@@ -65,11 +65,11 @@ public class ProductController : ControllerBase
 
         var productId = await _mediator.Send(createProductCommand);
 
-        return CreatedAtAction(nameof(Get), new { productId }, ResponseBase.ResponseBaseFactory(HttpStatusCode.Created));
+        return CreatedAtAction(nameof(GetAsync), new { productId }, ResponseBase.ResponseBaseFactory(HttpStatusCode.Created));
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] UpdateProductRequest productRequest)
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateProductRequest productRequest)
     {
 
         var updateProductCommand = new UpdateProductCommand()

@@ -20,7 +20,7 @@ public class CustomerRepository : ICustomerRepository
 
     public async Task<Investment> FindInvestimentByProductIdAsync(Guid id, Guid productId)
     {
-        return await _investimentPortfolioDbContext.Investiments.FirstOrDefaultAsync(i => i.CustomerId == id && i.ProductId == productId);
+        return await _investimentPortfolioDbContext.Investiments.Include(i => i.Product).FirstOrDefaultAsync(i => i.CustomerId == id && i.ProductId == productId);
     }
 
     public IQueryable<Transaction> FindTransactionsByProductId(Guid id, Guid productId)
@@ -30,7 +30,7 @@ public class CustomerRepository : ICustomerRepository
 
     public IQueryable<Investment> FindAllInvestments(Guid id)
     {
-        return _investimentPortfolioDbContext.Investiments.Where(c => c.CustomerId == id).AsQueryable();
+        return _investimentPortfolioDbContext.Investiments.Include(i => i.Product).Where(c => c.CustomerId == id).AsQueryable();
     }
 
     public IQueryable<Transaction> FindAllTransactions(Guid id)

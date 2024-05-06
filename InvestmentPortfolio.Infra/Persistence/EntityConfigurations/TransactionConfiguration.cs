@@ -12,7 +12,7 @@ public class TransactionConfiguration : IEntityTypeConfiguration<Transaction>
         builder.Property(x => x.CustomerId).HasColumnName("customerId").HasMaxLength(36).IsRequired();
         builder.Property(x => x.ProductId).HasColumnName("productId").HasMaxLength(36).IsRequired();
         builder.Property(x => x.Quantity).HasColumnName("quantity").IsRequired();
-        builder.Property(x => x.PU).HasColumnName("pu").IsRequired();
+        builder.Property(x => x.PU).HasColumnName("pu").HasPrecision(7).IsRequired();
         builder.Property(x => x.TransactionType).HasColumnName("type").IsRequired();
         builder.Property(x => x.Date).HasColumnName("dt_transaction").IsRequired();
 

@@ -2,6 +2,7 @@
 using InvestmentPortfolio.API.Response;
 using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Queries.Investments;
+using InvestmentPortfolio.Application.Queries.Transactions;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
 using MediatR;
@@ -21,7 +22,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/investments")]
-    public async Task<IActionResult> GetInvesments([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
+    public async Task<IActionResult> GetInvesmentsAsync([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
         var getInvestmentQuery = new GetInvestmentQuery()
@@ -38,7 +39,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/investments/{productId}")]
-    public async Task<IActionResult> GetInvesmentsByProductId([FromRoute] Guid id, [FromRoute] Guid productId)
+    public async Task<IActionResult> GetInvesmentsByProductIdAsync([FromRoute] Guid id, [FromRoute] Guid productId)
     {
 
         var getInvestmentByProductQuery = new GetInvestmentByProductQuery()
@@ -53,10 +54,9 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/transactions")]
-    public async Task<IActionResult> GetTransactions([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
+    public async Task<IActionResult> GetTransactionsAsync([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
-
-        var getInvestmentQuery = new GetInvestmentQuery()
+        var getTransactionQuery = new GetTransactionQuery()
         {
             CustomerId = id,
             Page = pagedListQueryParams.Page,
@@ -64,16 +64,16 @@ public class CustomerController : ControllerBase
 
         };
 
-        var investments = await _mediator.Send(getInvestmentQuery);
+        var transactions = await _mediator.Send(getTransactionQuery);
 
-        return Ok(ResponseBase<IPagedList<InvestmentSummary>>.ResponseBaseFactory(investments, HttpStatusCode.OK));
+        return Ok(ResponseBase<IPagedList<TransactionSummary>>.ResponseBaseFactory(transactions, HttpStatusCode.OK));
     }
 
     [HttpGet("{id}/transactions/{productId}")]
-    public async Task<IActionResult> GetTransactionsByProductId([FromRoute] Guid id, [FromRoute] Guid productId, [FromQuery] PagedListQueryParams pagedListQueryParams)
+    public async Task<IActionResult> GetTransactionsByProductIdAsync([FromRoute] Guid id, [FromRoute] Guid productId, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
-        var getInvestmentByProductQuery = new GetInvestmentByProductQuery()
+        var getTransactionByProductQuery = new GetTransactionByProductQuery()
         {
             CustomerId = id,
             ProductId = productId,
@@ -81,8 +81,8 @@ public class CustomerController : ControllerBase
             PageSize = pagedListQueryParams.PageSize
         };
 
-        var investments = await _mediator.Send(getInvestmentByProductQuery);
+        var transactions = await _mediator.Send(getTransactionByProductQuery);
 
-        return Ok(ResponseBase<InvestmentDetails>.ResponseBaseFactory(investments, HttpStatusCode.OK));
+        return Ok(ResponseBase<IPagedList<TransactionDetails>>.ResponseBaseFactory(transactions, HttpStatusCode.OK));
     }
 }

@@ -8,6 +8,7 @@ public class TransactionSummary
     public string ProductName { get; set; }
     public TransactionType TransactionType { get; set; }
     public string TransactionTypeName { get; set; }
+    public int Quantity { get; set; }
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
 

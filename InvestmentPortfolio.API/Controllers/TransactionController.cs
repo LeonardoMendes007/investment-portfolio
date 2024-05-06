@@ -18,7 +18,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost("/buy")]
-    public async Task<IActionResult> Buy([FromBody] TransactionRequest transactionRequest)
+    public async Task<IActionResult> BuyAsync([FromBody] TransactionRequest transactionRequest)
     {
         var transactionBuyCommand = new TransactionBuyCommand()
         {
@@ -33,7 +33,7 @@ public class TransactionController : ControllerBase
     }
 
     [HttpPost("/sell")]
-    public async Task<IActionResult> Sell([FromBody] TransactionRequest transactionRequest)
+    public async Task<IActionResult> SellAsync([FromBody] TransactionRequest transactionRequest)
     {
 
         var transactionSellCommand = new TransactionSellCommand()
