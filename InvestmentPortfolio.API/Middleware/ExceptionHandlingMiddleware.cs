@@ -1,7 +1,7 @@
 ﻿using InvestmentPortfolio.API.Response;
+using InvestmentPortfolio.Application.Exceptions;
 using InvestmentPortfolio.Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System.Net;
 
 namespace InvestmentPortfolio.API.Middleware;
@@ -23,25 +23,25 @@ public class ExceptionHandlingMiddleware
         {
             await _next(context);
         }
-        //catch (ValidationException ex)
-        //{
-        //    _logger.LogWarning("Validation error occurred");
+        catch (ValidationException ex)
+        {
+            _logger.LogWarning("Validation error occurred");
 
-        //    var problemDetails = new ProblemDetails
-        //    {
-        //        Status = StatusCodes.Status400BadRequest,
-        //        Type = "ValidationFailure",
-        //        Title = "Validation error",
-        //        Detail = "One or more validation errors has occurred"
-        //    };
+            var problemDetails = new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Type = "ValidationFailure",
+                Title = "Validation error",
+                Detail = "One or more validation errors has occurred"
+            };
 
-        //    if (ex.Errors is not null)
-        //    {
-        //        problemDetails.Extensions["errors"] = ex.Errors;
-        //    }
+            if (ex.Errors is not null)
+            {
+                problemDetails.Extensions["errors"] = ex.Errors;
+            }
 
-        //    await WriteResponseAsync(context, problemDetails, HttpStatusCode.BadRequest);
-        //}
+            await WriteResponseAsync(context, problemDetails, HttpStatusCode.BadRequest);
+        }
         catch (Exception ex) when (ex is ProductIsInativeException || ex is ResourceNotFoundException || ex is InvalidOperationException)
         {
             _logger.LogWarning(ex.Message);

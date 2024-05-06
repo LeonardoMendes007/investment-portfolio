@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using InvestmentPortfolio.Application.Commands.Transaction;
-using InvestmentPortfolio.Application.Services;
 using InvestmentPortfolio.Application.Services.Interfaces;
-using InvestmentPortfolio.Domain.Entities.Investment;
 using InvestmentPortfolio.Domain.Entities.Transaction;
-using InvestmentPortfolio.Domain.Exceptions;
 using InvestmentPortfolio.Domain.Interfaces.UnitOfWork;
 using MediatR;
 
@@ -17,17 +14,21 @@ public class TransactionCommandHandler : IRequestHandler<TransactionBuyCommand, 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public TransactionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+    public TransactionCommandHandler(IInvestmentService investmentService, ITransactionService transactionService, IUnitOfWork unitOfWork, IMapper mapper)
     {
+        _investmentService = investmentService;
+        _transactionService = transactionService;
         _unitOfWork = unitOfWork;
         _mapper = mapper;
-
-        _transactionService = new TransactionService(unitOfWork);
-        _investmentService = new InvestmentService(unitOfWork);
     }
 
     public async Task<Guid> Handle(TransactionBuyCommand request, CancellationToken cancellationToken)
     {
+        if(request.Quantity > 0)
+        {
+            throw new Exceptions.ValidationException("Quantity", $"'Quantity' cannot be less than 0.");
+        }
+
         var transaction = _mapper.Map<Transaction>(request);
 
         await _transactionService.Create(transaction);
@@ -41,6 +42,10 @@ public class TransactionCommandHandler : IRequestHandler<TransactionBuyCommand, 
 
     public async Task<Guid> Handle(TransactionSellCommand request, CancellationToken cancellationToken)
     {
+        if (request.Quantity > 0)
+        {
+            throw new Exceptions.ValidationException("Quantity", $"'Quantity' cannot be less than 0.");
+        }
         var transaction = _mapper.Map<Transaction>(request);
 
         await _transactionService.Create(transaction);
