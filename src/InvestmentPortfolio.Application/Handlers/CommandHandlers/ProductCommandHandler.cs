@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using InvestmentPortfolio.Application.Commands.Product;
-using InvestmentPortfolio.Application.Exceptions;
 using InvestmentPortfolio.Application.Services.Interfaces;
 using InvestmentPortfolio.Domain.Entities.Product;
 using MediatR;
-using System.ComponentModel.DataAnnotations;
 
 namespace InvestmentPortfolio.Application.Handlers.CommandHandlers;
 public class ProductCommandHandler : IRequestHandler<CreateProductCommand, Guid>,

@@ -24,7 +24,7 @@ public class TransactionCommandHandler : IRequestHandler<TransactionBuyCommand, 
 
     public async Task<Guid> Handle(TransactionBuyCommand request, CancellationToken cancellationToken)
     {
-        if(request.Quantity > 0)
+        if (request.Quantity <= 0)
         {
             throw new Exceptions.ValidationException("Quantity", $"'Quantity' cannot be less than 0.");
         }
@@ -42,7 +42,7 @@ public class TransactionCommandHandler : IRequestHandler<TransactionBuyCommand, 
 
     public async Task<Guid> Handle(TransactionSellCommand request, CancellationToken cancellationToken)
     {
-        if (request.Quantity > 0)
+        if (request.Quantity <= 0)
         {
             throw new Exceptions.ValidationException("Quantity", $"'Quantity' cannot be less than 0.");
         }
