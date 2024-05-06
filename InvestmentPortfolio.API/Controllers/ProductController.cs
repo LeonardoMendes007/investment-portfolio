@@ -1,5 +1,6 @@
 ﻿using InvestmentPortfolio.API.QueryParams;
 using InvestmentPortfolio.API.Request;
+using InvestmentPortfolio.API.Request.Product;
 using InvestmentPortfolio.API.Response;
 using InvestmentPortfolio.Application.Commands.Product;
 using InvestmentPortfolio.Application.Pagination.Interface;

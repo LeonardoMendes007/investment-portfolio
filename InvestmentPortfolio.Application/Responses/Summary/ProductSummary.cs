@@ -6,4 +6,5 @@ public class ProductSummary
     public string Description { get; set; }
     public decimal CurrentPrice { get; set; }
     public DateTime ExpirationDate { get; set; }
+    public bool IsActive { get; set; }
 }

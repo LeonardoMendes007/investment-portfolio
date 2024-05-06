@@ -19,6 +19,11 @@ public class InvestmentService : IInvestmentService
 
     public async Task<Investment> BuyInvestment(Transaction transaction)
     {
+        if (!transaction.Product.IsActive)
+        {
+            throw new ProductIsInativeException(transaction.Product.Id);
+        }
+
         if (transaction.Customer.Balance < (transaction.Product.CurrentPrice * transaction.Quantity))
         {
             throw new InvalidOperationException($"Insufficient balance to carry out the operation.");
@@ -51,7 +56,7 @@ public class InvestmentService : IInvestmentService
 
         if (investment is null)
         {
-            throw new ResourceNotExistsException($"The customer does not own the product with id = {transaction.ProductId}");
+            throw new ResourceNotFoundException(investment.ProductId, $"The customer does not own the product with id = {transaction.ProductId}");
         }
 
         if (investment.Quantity < transaction.Quantity)

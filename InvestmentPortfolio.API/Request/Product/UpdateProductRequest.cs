@@ -1,4 +1,4 @@
-﻿namespace InvestmentPortfolio.API.Request;
+﻿namespace InvestmentPortfolio.API.Request.Product;
 
 public class UpdateProductRequest
 {

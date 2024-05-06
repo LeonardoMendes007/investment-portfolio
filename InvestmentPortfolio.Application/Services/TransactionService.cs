@@ -23,19 +23,14 @@ public class TransactionService : ITransactionService
         
         if (customer is null)
         {
-            throw new ResourceNotExistsException(transaction.CustomerId, $"There is no customer with id = {transaction.CustomerId}");
+            throw new ResourceNotFoundException(transaction.CustomerId, $"There is no customer with id = {transaction.CustomerId}");
         }
 
         var product = await _unitOfWork.ProductRepository.FindByIdAsync(transaction.ProductId);
         
         if (product is null)
         {
-            throw new ResourceNotExistsException(transaction.ProductId, $"There is no product with id = {transaction.ProductId}");
-        }
-
-        if (!product.IsActive)
-        {
-            throw new ProductIsInativeException(product.Id);
+            throw new ResourceNotFoundException(transaction.ProductId, $"There is no product with id = {transaction.ProductId}");
         }
 
         transaction.Id = Guid.NewGuid();

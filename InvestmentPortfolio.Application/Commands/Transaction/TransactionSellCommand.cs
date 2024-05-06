@@ -5,5 +5,5 @@ using MediatR;
 namespace InvestmentPortfolio.Application.Commands.Transaction;
 public class TransactionSellCommand : TransactionCommand, IRequest<Guid>
 {
-    public TransactionType transactionType { get; private set; } = TransactionType.Sell;
+    public TransactionType transactionType { get; } = TransactionType.Sell;
 }

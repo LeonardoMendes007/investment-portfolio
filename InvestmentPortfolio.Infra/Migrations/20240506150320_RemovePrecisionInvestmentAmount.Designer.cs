@@ -4,6 +4,7 @@ using InvestmentPortfolio.Infra.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InvestmentPortfolio.Infra.Migrations
 {
     [DbContext(typeof(InvestimentPortfolioDbContext))]
-    partial class InvestimentPortfolioDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506150320_RemovePrecisionInvestmentAmount")]
+    partial class RemovePrecisionInvestmentAmount
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

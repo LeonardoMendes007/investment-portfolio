@@ -45,7 +45,7 @@ public class TransactionCommandHandler : IRequestHandler<TransactionBuyCommand, 
 
         await _transactionService.Create(transaction);
 
-        await _investmentService.BuyInvestment(transaction);
+        await _investmentService.SellInvestment(transaction);
 
         await _unitOfWork.CommitAsync();
 
