@@ -59,7 +59,7 @@ public class ProductService : IProductService
 
         if(product is null)
         {
-            throw new ResourceNotFoundException(product.Id);
+            throw new ResourceNotFoundException(id);
         }
 
         return _mapper.Map<ProductDetails>(product);

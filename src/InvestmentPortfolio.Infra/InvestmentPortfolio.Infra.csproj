@@ -12,10 +12,10 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.4" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 	</ItemGroup>
-	
-  <ItemGroup>
-    <ProjectReference Include="..\InvestmentPortfolio.Application\InvestmentPortfolio.Application.csproj" />
-  </ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\InvestmentPortfolio.Domain\InvestmentPortfolio.Domain.csproj" />
+	</ItemGroup>
 
 	
 

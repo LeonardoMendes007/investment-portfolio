@@ -1,0 +1,12 @@
+﻿
+Esse é um aviso automatico do sistema.
+
+O Produto de ID {Id} está próximo de vencer.
+
+Segue os dados do produto:
+
+ID: {Id}
+Nome: {Name}
+Preço inicial: {InitialPrice}
+Preço atual: {CurrentPrice}
+Data de expiração: {ExpirationDate}

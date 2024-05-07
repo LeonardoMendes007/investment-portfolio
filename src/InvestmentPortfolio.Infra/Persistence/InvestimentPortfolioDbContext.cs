@@ -22,4 +22,5 @@ public sealed class InvestimentPortfolioDbContext : DbContext
         builder.ApplyConfigurationsFromAssembly(typeof(InvestimentPortfolioDbContext)
             .Assembly);
     }
+
 }

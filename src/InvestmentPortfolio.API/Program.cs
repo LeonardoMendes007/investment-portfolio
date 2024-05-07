@@ -1,5 +1,9 @@
 using InvestmentPortfolio.API.Middleware;
 using InvestmentPortfolio.CrossCutting.DependencyInjection;
+using InvestmentPortfolio.Domain.Entities.Customer;
+using InvestmentPortfolio.Infra.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

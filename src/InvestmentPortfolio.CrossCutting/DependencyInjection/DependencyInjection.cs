@@ -4,14 +4,22 @@ using InvestmentPortfolio.Application.Mapper.AutoMapperConfig;
 using InvestmentPortfolio.Application.Services;
 using InvestmentPortfolio.Application.Services.Interfaces;
 using InvestmentPortfolio.Application.Validators.Product;
+using InvestmentPortfolio.Domain.Entities.Customer;
 using InvestmentPortfolio.Domain.Interfaces.Repositories;
+using InvestmentPortfolio.Domain.Interfaces.Services;
 using InvestmentPortfolio.Domain.Interfaces.UnitOfWork;
 using InvestmentPortfolio.Infra.Persistence;
+using InvestmentPortfolio.Infra.Persistence.Data;
 using InvestmentPortfolio.Infra.Persistence.Repositories;
 using InvestmentPortfolio.Infra.Persistence.UnitOfWork;
+using InvestmentPortfolio.Job;
+using InvestmentPortfolio.Job.Options;
+using InvestmentPortfolio.Job.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 
 namespace InvestmentPortfolio.CrossCutting.DependencyInjection;
 public static class DependencyInjection
@@ -21,7 +29,7 @@ public static class DependencyInjection
     {
         #region Banco de dados
         services.AddDbContext<InvestimentPortfolioDbContext>(options =>
-           options.UseInMemoryDatabase(configuration.GetConnectionString("InvestimentPortfolioDbConnection")));
+           options.UseInMemoryDatabase("InvestimentPortfolioDbConnection"));
         #endregion
 
         #region MediatR
@@ -34,7 +42,23 @@ public static class DependencyInjection
         services.AddAutoMapper(typeof(AutoMapperConfiguration));
         #endregion
 
+        #region EmailOptions
+
+        var emailOptions = configuration.GetSection("EmailSettings").Get<EmailOptions>();
+        services.AddSingleton<EmailOptions>(emailOptions);
+
+        #endregion
+
+        #region WorkerOptions
+
+        var workerOptions = configuration.GetSection("WorkerSettings").Get<WorkerOptions>();
+        services.AddSingleton<WorkerOptions>(workerOptions);
+
+        #endregion
+
         #region Services
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IWorkerService, WorkerService>();
         services.AddScoped<IProductService, ProductService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IInvestmentService, InvestmentService>();
@@ -54,6 +78,13 @@ public static class DependencyInjection
         services.AddTransient<IValidator<UpdateProductCommand>, UpdateProductCommandValidator>();
         #endregion
 
+        #region Workers
+        services.AddHostedService<InfoWorker>();
+        #endregion
+
+        #region InitializeDb
+        DbInitializer.Seed(services.BuildServiceProvider());
+        #endregion
 
         return services;
     }
