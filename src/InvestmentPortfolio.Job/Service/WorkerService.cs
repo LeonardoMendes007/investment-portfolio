@@ -21,7 +21,7 @@ public class WorkerService : IWorkerService
     {
         var productsQuery = _unitOfWork.ProductRepository.FindAll();
 
-        var expiredProducts = productsQuery.Where(p => (p.ExpirationDate - DateTime.Now).TotalDays < 5).ToList();
+        var expiredProducts = productsQuery.Where(p => (p.ExpirationDate > DateTime.Now) && (p.ExpirationDate - DateTime.Now).Days < 5).ToList();
 
         _logger.LogInformation($"{expiredProducts.Count} expired products were found");
 

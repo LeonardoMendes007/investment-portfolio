@@ -45,6 +45,7 @@ public class ExceptionHandlingMiddleware
         catch (Exception ex) when (ex is ProductIsInativeException || 
                                    ex is ResourceNotFoundException || 
                                    ex is InvalidOperationException || 
+                                   ex is ResourceAlreadyExistsException ||
                                    ex is ProductExpiredException)
         {
             _logger.LogWarning(ex.Message);

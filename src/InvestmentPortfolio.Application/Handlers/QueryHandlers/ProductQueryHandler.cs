@@ -18,7 +18,6 @@ public class ProductQueryHandler : IRequestHandler<GetProductQuery, IPagedList<P
 
     public async Task<IPagedList<ProductSummary>> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
-
         return await _productService.GetAllAsync(request.Inactive, request.Expired, request.Page, request.PageSize);
     }
 

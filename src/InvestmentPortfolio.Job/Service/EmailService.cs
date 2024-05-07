@@ -20,12 +20,12 @@ public class EmailService : IEmailService
         {
             message.From = new MailAddress(_emailOptions.Email);
             message.To.Add(_emailOptions.To);
-            message.Subject = $"Faltam {(product.ExpirationDate - DateTime.Now).Days} para o produto de ID {product.Id} expirar.";
+            message.Subject = $"Faltam {(product.ExpirationDate - DateTime.Now).Days} para o produto de nome {product.Name} expirar.";
             
             message.IsBodyHtml = true;
 
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            string filePath = Path.Combine(basePath, "Templates", "EmailTemplate.txt");
+            string filePath = Path.Combine(basePath, "Templates", "EmailTemplate.html");
             var templateEmail = File.ReadAllText(filePath);
 
             templateEmail = templateEmail.Replace("{Id}", product.Id.ToString());

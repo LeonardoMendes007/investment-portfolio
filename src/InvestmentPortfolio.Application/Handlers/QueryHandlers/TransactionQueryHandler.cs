@@ -23,11 +23,6 @@ public class TransactionQueryHandler : IRequestHandler<GetTransactionByProductQu
 
     public async Task<IPagedList<TransactionDetails>> Handle(GetTransactionByProductQuery request, CancellationToken cancellationToken)
     {
-        if(await _productService.GetByIdAsync(request.ProductId) is null)
-        {
-            throw new ResourceNotFoundException(request.ProductId);
-        }
-
         return await _productService.GetAllTransactionsAsync(request.ProductId, request.Page, request.PageSize);
     }
 

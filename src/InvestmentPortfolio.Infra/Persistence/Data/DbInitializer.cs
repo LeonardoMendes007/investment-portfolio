@@ -1,5 +1,6 @@
 ﻿using InvestmentPortfolio.Domain.Entities.Customer;
 using InvestmentPortfolio.Domain.Entities.Product;
+using InvestmentPortfolio.Domain.Entities.Transaction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,7 +32,7 @@ public static class DbInitializer
                 Balance = 50
             }
         });
-
+        
 
         dbContext.Products.AddRange(new List<Product>
         {
@@ -41,7 +42,7 @@ public static class DbInitializer
                 Description = "Petrobras",
                 InitialPrice = 5,
                 CurrentPrice = 5,
-                ExpirationDate = DateTime.Now.AddYears(1),
+                ExpirationDate = DateTime.Now.AddDays(2),
                 IsActive = true,
                 CreatedDate = DateTime.Now
             },

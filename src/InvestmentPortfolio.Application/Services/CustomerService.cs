@@ -33,6 +33,11 @@ public class CustomerService : ICustomerService
 
     public async Task<IPagedList<InvestmentSummary>> GetInvestmentByQueryAsync(Guid id, int page, int pageSize)
     {
+        if (await _unitOfWork.CustomerRepository.FindByIdAsync(id) is null)
+        {
+            throw new ResourceNotFoundException(id);
+        }
+
         var investments = _unitOfWork.CustomerRepository.FindAllInvestments(id);
 
         var investmentsSummary = investments
@@ -52,6 +57,16 @@ public class CustomerService : ICustomerService
 
     public async Task<IPagedList<TransactionDetails>> GetTransactionsByProductAsync(Guid id, Guid productId, int page, int pageSize)
     {
+        if (await _unitOfWork.CustomerRepository.FindByIdAsync(id) is null)
+        {
+            throw new ResourceNotFoundException(id);
+        }
+
+        if (await _unitOfWork.ProductRepository.FindByIdAsync(productId) is null)
+        {
+            throw new ResourceNotFoundException(id);
+        }
+
         var transactions = _unitOfWork.CustomerRepository.FindTransactionsByProductId(id, productId);
 
         var transactionsDetails = transactions
@@ -65,7 +80,6 @@ public class CustomerService : ICustomerService
                 Quantity = t.Quantity,
                 TransactionType = t.TransactionType,
                 TransactionTypeName = t.TransactionType == 0 ? "Buy" : "Sell",
-                
                 Date = t.Date
             });
 
@@ -76,6 +90,11 @@ public class CustomerService : ICustomerService
 
     public async Task<IPagedList<TransactionSummary>> GetTransactionByQueryAsync(Guid id, int page, int pageSize)
     {
+        if (await _unitOfWork.CustomerRepository.FindByIdAsync(id) is null)
+        {
+            throw new ResourceNotFoundException(id);
+        }
+
         var transactions = _unitOfWork.CustomerRepository.FindAllTransactions(id);
 
         var transactionsSummary = transactions

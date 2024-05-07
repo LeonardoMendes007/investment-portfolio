@@ -6,7 +6,7 @@ using MovieApp.MovieApi.Application.Queries;
 namespace InvestmentPortfolio.Application.Queries.Product;
 public class GetProductQuery : PagedListQuery, IRequest<IPagedList<ProductSummary>>
 {
-    public bool Inactive { get; set; }
-    public bool Expired { get; set; }
+    public bool Inactive { get; set; } = false;
+    public bool Expired { get; set; } = false;
 
 }

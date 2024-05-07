@@ -67,7 +67,7 @@ public class ProductCommandHandlerTest
     }
 
     [Fact]
-    public async Task Handle_UpdateProductCommand_ReturnsGuid()
+    public async Task Handle_UpdateProductCommand()
     {
         // Arrange
         var updateCommand = new UpdateProductCommand
