@@ -1,4 +1,5 @@
 ﻿using InvestmentPortfolio.Domain.Entities.Product;
+using InvestmentPortfolio.Domain.Entities.Transaction;
 using InvestmentPortfolio.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +15,11 @@ public class ProductRepository : IProductRepository
     public IQueryable<Product> FindAll()
     {
         return _investimentPortfolioDbContext.Products.AsQueryable();
+    }
+
+    public IQueryable<Transaction> FindAllTransations(Guid id)
+    {
+        return _investimentPortfolioDbContext.Transactions.Where(t => t.ProductId == id).AsQueryable();
     }
 
     public async Task<Product> FindByIdAsync(Guid id)

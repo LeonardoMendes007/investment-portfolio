@@ -55,11 +55,11 @@ public class CustomerController : ControllerBase
         return Ok(ResponseBase<InvestmentDetails>.ResponseBaseFactory(investments, HttpStatusCode.OK));
     }
 
-    [HttpGet("{id}/transactions")]
+    [HttpGet("{id}/extract")]
     [ProducesResponseType<ResponseBase<IPagedList<TransactionSummary>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTransactionsAsync([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
-        var getTransactionQuery = new GetTransactionQuery()
+        var getTransactionQuery = new GetTransactionByCustomerQuery()
         {
             CustomerId = id,
             Page = pagedListQueryParams.Page,
@@ -72,12 +72,12 @@ public class CustomerController : ControllerBase
         return Ok(ResponseBase<IPagedList<TransactionSummary>>.ResponseBaseFactory(transactions, HttpStatusCode.OK));
     }
 
-    [HttpGet("{id}/transactions/{productId}")]
+    [HttpGet("{id}/extract/{productId}")]
     [ProducesResponseType<ResponseBase<IPagedList<TransactionDetails>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTransactionsByProductIdAsync([FromRoute] Guid id, [FromRoute] Guid productId, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
-        var getTransactionByProductQuery = new GetTransactionByProductQuery()
+        var getTransactionByProductQuery = new GetTransactionByCustomerAndProductQuery()
         {
             CustomerId = id,
             ProductId = productId,

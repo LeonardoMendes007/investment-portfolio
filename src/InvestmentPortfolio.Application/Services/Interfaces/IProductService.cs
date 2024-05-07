@@ -8,6 +8,7 @@ public interface IProductService
 {
     Task<IPagedList<ProductSummary>> GetAllAsync(bool inactive, bool expired, int page, int pageSize);
     Task<ProductDetails> GetByIdAsync(Guid id);
+    Task<IPagedList<TransactionDetails>> GetAllTransactionsAsync(Guid id, int page, int pageSize);
     Task<Guid> CreateAsync(Product product);
     Task UpdateAsync(Product product);
 }

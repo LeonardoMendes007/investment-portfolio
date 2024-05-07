@@ -65,6 +65,32 @@ public class ProductService : IProductService
         return pagedListProducts;
     }
 
+    public async Task<IPagedList<TransactionDetails>> GetAllTransactionsAsync(Guid id, int page, int pageSize)
+    {
+        var transactionsQuery = _unitOfWork.ProductRepository.FindAllTransations(id);
+
+        transactionsQuery = transactionsQuery.OrderByDescending(x => x.Date);
+
+        var transactionsDetails = transactionsQuery
+            .Select(t => new TransactionDetails
+            {
+                Id = t.Id,
+                ProductId = t.ProductId,
+                CustomerId = t.CustomerId,
+                ProductName = t.Product.Name,
+                PU = t.PU,
+                Quantity = t.Quantity,
+                TransactionType = t.TransactionType,
+                TransactionTypeName = t.TransactionType == 0 ? "Buy" : "Sell",
+
+                Date = t.Date
+            });
+
+        var pagedListTrasactions = PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, page, pageSize);
+
+        return pagedListTrasactions;
+    }
+
     public async Task<ProductDetails> GetByIdAsync(Guid id)
     {
         var product = await _unitOfWork.ProductRepository.FindByIdAsync(id);

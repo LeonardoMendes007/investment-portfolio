@@ -18,11 +18,11 @@ public class InvestmentQueryHandler : IRequestHandler<GetInvestmentQuery, IPaged
 
     public async Task<IPagedList<InvestmentSummary>> Handle(GetInvestmentQuery request, CancellationToken cancellationToken)
     {
-        return await _customerService.GetInvestmentByQuery(request.CustomerId, request.Page, request.PageSize);
+        return await _customerService.GetInvestmentByQueryAsync(request.CustomerId, request.Page, request.PageSize);
     }
 
     public async Task<InvestmentDetails> Handle(GetInvestmentByProductQuery request, CancellationToken cancellationToken)
     {
-        return await _customerService.GetInvestmentByProduct(request.CustomerId, request.ProductId);
+        return await _customerService.GetInvestmentByProductAsync(request.CustomerId, request.ProductId);
     }
 }

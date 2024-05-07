@@ -5,6 +5,7 @@ using InvestmentPortfolio.API.Response;
 using InvestmentPortfolio.Application.Commands.Product;
 using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Queries.Product;
+using InvestmentPortfolio.Application.Queries.Transaction;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
 using InvestmentPortfolio.Domain.Entities.Product;
@@ -29,7 +30,6 @@ public class ProductController : ControllerBase
     [HttpGet("{id}", Name = "GetById")]
     [ProducesResponseType<ResponseBase<ProductDetails>>(StatusCodes.Status200OK)]
     [ProducesResponseType<ResponseBase>(StatusCodes.Status404NotFound)]
-    [SwaggerOperation("The ID of the product to retrieve.")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var productDetails = await _mediator.Send(new GetProductByIdQuery()
@@ -56,6 +56,23 @@ public class ProductController : ControllerBase
         var products = await _mediator.Send(getMoviesQuery);
 
         return Ok(ResponseBase<IPagedList<ProductSummary>>.ResponseBaseFactory(products, HttpStatusCode.OK));
+    }
+
+    [HttpGet("{id}/extract")]
+    [ProducesResponseType<ResponseBase<IPagedList<ProductSummary>>>(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAllTransactionsAsync([FromRoute] Guid id,[FromQuery] PagedListQueryParams pagedListQueryParams)
+    {
+
+        var getTransactionByProduct = new GetTransactionByProductQuery()
+        {
+            ProductId = id,
+            Page = pagedListQueryParams.Page,
+            PageSize = pagedListQueryParams.PageSize
+        };
+
+        var transactions = await _mediator.Send(getTransactionByProduct);
+
+        return Ok(ResponseBase<IPagedList<TransactionDetails>>.ResponseBaseFactory(transactions, HttpStatusCode.OK));
     }
 
 

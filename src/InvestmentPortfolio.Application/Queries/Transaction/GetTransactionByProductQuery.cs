@@ -1,12 +1,11 @@
-﻿using InvestmentPortfolio.Application.Responses.Details;
-using MovieApp.MovieApi.Application.Queries;
+﻿using InvestmentPortfolio.Application.Pagination.Interface;
+using InvestmentPortfolio.Application.Responses.Details;
+using InvestmentPortfolio.Application.Responses.Summary;
 using MediatR;
-using InvestmentPortfolio.Application.Pagination.Interface;
+using MovieApp.MovieApi.Application.Queries;
 
-
-namespace InvestmentPortfolio.Application.Queries.Transactions;
+namespace InvestmentPortfolio.Application.Queries.Transaction;
 public class GetTransactionByProductQuery : PagedListQuery, IRequest<IPagedList<TransactionDetails>>
 {
-    public Guid CustomerId { get; set; }
     public Guid ProductId { get; set; }
 }

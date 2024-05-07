@@ -20,7 +20,7 @@ public class EmailService : IEmailService
         {
             message.From = new MailAddress(_emailOptions.Email);
             message.To.Add(_emailOptions.To);
-            message.Subject = $"Faltam {(product.ExpirationDate - DateTime.Now).TotalDays} para o produto de ID {product.Id} expirar.";
+            message.Subject = $"Faltam {(product.ExpirationDate - DateTime.Now).Days} para o produto de ID {product.Id} expirar.";
             
             message.IsBodyHtml = true;
 
