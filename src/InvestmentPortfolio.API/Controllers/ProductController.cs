@@ -10,6 +10,7 @@ using InvestmentPortfolio.Application.Responses.Summary;
 using InvestmentPortfolio.Domain.Entities.Product;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace InvestmentPortfolio.API.Controllers;
@@ -24,7 +25,11 @@ public class ProductController : ControllerBase
         _mediator = mediator;
     }
 
+    
     [HttpGet("{id}", Name = "GetById")]
+    [ProducesResponseType<ResponseBase<ProductDetails>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status404NotFound)]
+    [SwaggerOperation("The ID of the product to retrieve.")]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
     {
         var productDetails = await _mediator.Send(new GetProductByIdQuery()
@@ -36,6 +41,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType<ResponseBase<IPagedList<ProductSummary>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAllAsync([FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
@@ -52,6 +58,8 @@ public class ProductController : ControllerBase
 
 
     [HttpPost]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status201Created)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateAsync([FromBody] CreateProductRequest productRequest)
     {
 
@@ -70,6 +78,8 @@ public class ProductController : ControllerBase
     }
 
     [HttpPut]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UpdateAsync([FromBody] UpdateProductRequest productRequest)
     {
 

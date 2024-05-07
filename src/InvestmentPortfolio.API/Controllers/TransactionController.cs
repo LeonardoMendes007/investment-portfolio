@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace InvestmentPortfolio.API.Controllers;
-[Route("api/transaction")]
+
 [ApiController]
 public class TransactionController : ControllerBase
 {
@@ -17,7 +17,9 @@ public class TransactionController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("/buy")]
+    [HttpPost("api/transaction/buy")]
+    [ProducesResponseType<ResponseBase<Guid>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> BuyAsync([FromBody] TransactionRequest transactionRequest)
     {
         var transactionBuyCommand = new TransactionBuyCommand()
@@ -32,7 +34,9 @@ public class TransactionController : ControllerBase
         return Ok(ResponseBase<Guid>.ResponseBaseFactory(transactionId, HttpStatusCode.OK));
     }
 
-    [HttpPost("/sell")]
+    [HttpPost("api/transaction/sell")]
+    [ProducesResponseType<ResponseBase<Guid>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SellAsync([FromBody] TransactionRequest transactionRequest)
     {
 

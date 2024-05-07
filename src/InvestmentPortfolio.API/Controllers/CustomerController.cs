@@ -22,6 +22,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/investments")]
+    [ProducesResponseType<ResponseBase<IPagedList<InvestmentSummary>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetInvesmentsAsync([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
@@ -39,6 +40,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/investments/{productId}")]
+    [ProducesResponseType<ResponseBase<InvestmentDetails>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetInvesmentsByProductIdAsync([FromRoute] Guid id, [FromRoute] Guid productId)
     {
 
@@ -54,6 +56,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/transactions")]
+    [ProducesResponseType<ResponseBase<IPagedList<TransactionSummary>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTransactionsAsync([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
         var getTransactionQuery = new GetTransactionQuery()
@@ -70,6 +73,7 @@ public class CustomerController : ControllerBase
     }
 
     [HttpGet("{id}/transactions/{productId}")]
+    [ProducesResponseType<ResponseBase<IPagedList<TransactionDetails>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTransactionsByProductIdAsync([FromRoute] Guid id, [FromRoute] Guid productId, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
 
