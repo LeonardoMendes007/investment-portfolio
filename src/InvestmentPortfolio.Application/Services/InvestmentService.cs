@@ -29,12 +29,7 @@ public class InvestmentService : IInvestmentService
             throw new ProductIsInativeException(transaction.Product.Id);
         }
 
-        if (transaction.Customer.Balance < (transaction.Product.CurrentPrice * transaction.Quantity))
-        {
-            throw new InvalidOperationException($"Insufficient balance to carry out the operation.");
-        }
-
-        transaction.Customer.Balance -= (transaction.Product.CurrentPrice * transaction.Quantity);
+        transaction.Customer.Debit((transaction.Product.CurrentPrice * transaction.Quantity));
 
         var investment = await _unitOfWork.CustomerRepository.FindInvestimentByProductIdAsync(transaction.CustomerId, transaction.ProductId);
 
@@ -71,7 +66,9 @@ public class InvestmentService : IInvestmentService
 
         investment.Quantity -= transaction.Quantity;
         investment.InvestmentAmount -= transaction.Quantity * transaction.PU;
-        
+
+        transaction.Customer.Credit((transaction.Product.CurrentPrice * transaction.Quantity));
+
         return investment;
     }
 }
