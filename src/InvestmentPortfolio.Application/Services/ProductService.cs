@@ -34,9 +34,20 @@ public class ProductService : IProductService
         return product.Id;  
     }
 
-    public async Task<IPagedList<ProductSummary>> GetAllAsync(int page, int pageSize)
+    public async Task<IPagedList<ProductSummary>> GetAllAsync(bool inactive, bool expired, int page, int pageSize)
     {
         var products = _unitOfWork.ProductRepository.FindAll();
+
+        products = products.Where(p => p.IsActive == !inactive);
+
+        if(expired)
+        {
+            products = products.Where(p => p.ExpirationDate < DateTime.Now);
+        }
+        else
+        {
+            products = products.Where(p => p.ExpirationDate > DateTime.Now);
+        }
 
         var productsSummary = products
             .Select(p => new ProductSummary
@@ -45,7 +56,8 @@ public class ProductService : IProductService
                 Name = p.Name,
                 Description = p.Description,
                 CurrentPrice = p.CurrentPrice,
-                ExpirationDate = p.ExpirationDate
+                ExpirationDate = p.ExpirationDate,
+                IsActive = p.IsActive
             });
 
         var pagedListProducts = PagedList<ProductSummary>.CreatePagedList(productsSummary, page, pageSize);

@@ -54,6 +54,28 @@ public static class DbInitializer
                 ExpirationDate = DateTime.Now.AddDays(30),
                 IsActive = true,
                 CreatedDate = DateTime.Now
+            },
+            new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = "ITIT",
+                Description = "INTER TEVA INDICE DE TIJOLO FUNDO DE INVESTIMENTO",
+                InitialPrice = 40,
+                CurrentPrice = 35,
+                ExpirationDate = DateTime.Now.AddYears(2),
+                IsActive = false,
+                CreatedDate = DateTime.Now
+            },
+            new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = "JASC",
+                Description = "JASC RENDA VAREJO ESSENCIAL FDO DE INV IMOB - FII",
+                InitialPrice = 100,
+                CurrentPrice = 150,
+                ExpirationDate = DateTime.Now.AddYears(-1),
+                IsActive = true,
+                CreatedDate = DateTime.Now
             }
         });
 

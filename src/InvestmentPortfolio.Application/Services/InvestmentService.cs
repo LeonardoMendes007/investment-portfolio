@@ -24,6 +24,11 @@ public class InvestmentService : IInvestmentService
             throw new ProductIsInativeException(transaction.Product.Id);
         }
 
+        if (transaction.Product.ExpirationDate < DateTime.Now)
+        {
+            throw new ProductIsInativeException(transaction.Product.Id);
+        }
+
         if (transaction.Customer.Balance < (transaction.Product.CurrentPrice * transaction.Quantity))
         {
             throw new InvalidOperationException($"Insufficient balance to carry out the operation.");

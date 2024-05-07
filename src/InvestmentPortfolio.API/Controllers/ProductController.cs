@@ -42,13 +42,15 @@ public class ProductController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType<ResponseBase<IPagedList<ProductSummary>>>(StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllAsync([FromQuery] PagedListQueryParams pagedListQueryParams)
+    public async Task<IActionResult> GetAllAsync([FromQuery] GetProductsQueryParams getProductsQueryParams)
     {
 
         var getMoviesQuery = new GetProductQuery()
         {
-            Page = pagedListQueryParams.Page,
-            PageSize = pagedListQueryParams.PageSize
+            Inactive = getProductsQueryParams.Inactive,
+            Expired = getProductsQueryParams.Expired,
+            Page = getProductsQueryParams.Page,
+            PageSize = getProductsQueryParams.PageSize
         };
 
         var products = await _mediator.Send(getMoviesQuery);

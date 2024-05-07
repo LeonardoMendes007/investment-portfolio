@@ -42,7 +42,10 @@ public class ExceptionHandlingMiddleware
 
             await WriteResponseAsync(context, problemDetails, HttpStatusCode.BadRequest);
         }
-        catch (Exception ex) when (ex is ProductIsInativeException || ex is ResourceNotFoundException || ex is InvalidOperationException)
+        catch (Exception ex) when (ex is ProductIsInativeException || 
+                                   ex is ResourceNotFoundException || 
+                                   ex is InvalidOperationException || 
+                                   ex is ProductExpiredException)
         {
             _logger.LogWarning(ex.Message);
 
