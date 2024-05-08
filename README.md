@@ -1,6 +1,7 @@
+
   
 
-� <h1> Portfolio investimento </h1>
+<h1> Portfolio investimento </h1>
 
   
 
@@ -32,6 +33,8 @@ Tabela de conteúdos
 * [Utilizando a aplicação](#aplicacao)
 
 * [Tecnologias](#tecnologias)
+
+* [Teste de carga](#carga) 
 
 * [Autor](#autor)
 
@@ -99,34 +102,68 @@ Para utilizar a aplicação basta seguir esse passo a passo:
 
 1.  **Executar a Aplicação na IDE**: Inicie a aplicação na IDE e verifique se o servidor está funcionando.
 
-2.  **Acessar a Interface do Swagger**: No navegador, vá para `https://localhost:7200/swagger/index.html`.
+2.  **Acessar a Interface do Swagger**: No navegador, vá para `http://localhost:7200/swagger/index.html`.
 
-3.  **Selecionar o Método HTTP POST**: No contexto de `Api/Product`, clique no método POST para adicionar um novo produto.
+3.  **Selecionar o Método HTTP POST**: No contexto de `api/product`, clique no método POST para adicionar um novo produto.
 
 4.  **Preencher as Informações do Api/Product**: Insira as informações necessárias de acordo com o tipo de dados especificado.
 
 5.  **Utilizar o Método GET Api/Product**: Após adicionar o produto, use o método GET para ver todos os produtos e recuperar o ID do novo produto.
 
-6.  **Realizar Operações de Transação**: Para comprar ou vender, vá para os endpoints `/Buy` ou `/Sell`, fornecendo o ID do produto e do usuário e quantidade desejada.
+6. **Utilizar o Método GET Api/Product/{id}/Extract**: Para consultar o extrato baseado em um produto basta utilizar o seguinte endpoint `api/product/{id}/extract` .
 
-7.  **Consultar Investimentos e Transações do Usuário**: Para ver os investimentos e transações de um usuário, utilize os endpoints `api/customer/{id}/investments`ou`api/customer/{id}/transactions` de consulta com o ID do usuário. Para detalhes específicos, adicione o ID do produto `api/customer/{id}/investments/{productId}`ou`api/customer/{id}/transactions/{productId}`.
+7.  **Realizar Operações de Transação**: Para comprar ou vender, vá para os endpoints `/Buy` ou `/Sell`, fornecendo o ID do produto e do usuário e quantidade desejada.
 
-  
+  ````bash
+# Observação sobre o ID do usuário
+
+Para realizar as consultas de transações customizadas pelo usuário utilizar os seguintes ID's:
+
+"FE232D84-BE96-4669-954C-215B65F6DBE4" : este usuário tem R$ 1.000,00 de Saldo.
+"E981D6BA-4CC3-4BF8-B1CC-5F78A4E0578D" : este usuário tem R$ 1.000.000,00 de Saldo.
+"427B9E92-A316-4AD6-853F-E488E3EE3972" : este usuário tem R$ 50,00 de Saldo.
+
+````
+
+8.  **Consultar Investimentos e Transações do Usuário**: Para ver os investimentos e transações de um usuário, utilize os endpoints `api/customer/{id}/investment`ou`api/customer/{id}/extract` de consulta com o ID do usuário. Para detalhes específicos, adicione o ID do produto `api/customer/{id}/investment/{productId}`ou`api/customer/{id}/extract/{productId}`.
+
+9. **Disparo de e-mail**: Disparo de e-mail é um HostedService que realiza o envio diário, avisando sobre os produtos próximos da data de vencimento. 
+
+````bash
+# Configuração para o disparo de e-mail.
+
+"EmailSettings": {
+"SmtpServer": "{servidor smtp}",
+"SmtpPort": "{servidor port}",
+"Email": "{email credential}",
+"Password": "{password credential}",
+"To": "{email}"
+}
+
+````
+
+
   
 
 ### Tecnologias<a id="tecnologias"></a>
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
-- [.NET ](https://learn.microsoft.com/pt-br/dotnet/)
+- [.NET ](https://learn.microsoft.com/pt-br/dotnet/) 
 
 - [Entity Framework Core](https://learn.microsoft.com/pt-br/ef/core/)
 
-  
-  
-  
-  
-  
+- [JMeter](https://jmeter.apache.org/) 
+
+
+### Teste de Carga<a id="carga"></a>
+
+Testes de carga nos endpoints de consulta de produto e extrato, utilizando a ferramenta Apache JMeter.
+
+![image](https://github.com/LeonardoMendes007/investment-portfolio/assets/57539940/f946c39f-43e6-4e00-b782-5db1a6dab864)
+
+  ![flotResponseTimesPercentiles](https://github.com/LeonardoMendes007/investment-portfolio/assets/57539940/318e4b18-d453-4e2b-b053-37a20619bfa4)
+
 
 ### Autor <a id="autor">  </a>
 
@@ -134,9 +171,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ---
 
-  
 
-<br  />
+<br/>
 
 <span> Feito por Leonardo Mendes 👋 Entre em contato! </span>
 
