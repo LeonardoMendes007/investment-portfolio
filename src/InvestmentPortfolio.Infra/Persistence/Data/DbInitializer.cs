@@ -1,8 +1,7 @@
 ﻿using InvestmentPortfolio.Domain.Entities.Customer;
 using InvestmentPortfolio.Domain.Entities.Product;
-using InvestmentPortfolio.Domain.Entities.Transaction;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace InvestmentPortfolio.Infra.Persistence.Data;
 public static class DbInitializer 
@@ -11,74 +10,18 @@ public static class DbInitializer
     {
         var dbContext = provider.GetService<InvestimentPortfolioDbContext>();
 
-        dbContext.Customers.AddRange(new List<Customer>
-        {
-            new Customer{
-                Id = Guid.Parse("FE232D84-BE96-4669-954C-215B65F6DBE4"),
-                Name = "Leonardo",
-                Address = "Av. Itaquera",
-                Balance = 1000
-            },
-            new Customer{
-                Id = Guid.Parse("E981D6BA-4CC3-4BF8-B1CC-5F78A4E0578D"),
-                Name = "Matheus",
-                Address = "Av. Natal",
-                Balance = 1000000
-            },
-            new Customer{
-                Id = Guid.Parse("427B9E92-A316-4AD6-853F-E488E3EE3972"),
-                Name = "Agnaldo",
-                Address = "Rua Francisco",
-                Balance = 50
-            }
-        });
-        
+        string basePath = AppDomain.CurrentDomain.BaseDirectory;
+        string filePath = Path.Combine(basePath, @"Persistence\Data\Mock");
 
-        dbContext.Products.AddRange(new List<Product>
-        {
-            new Product{
-                Id = Guid.Parse("e4ac953c-ab3c-4660-ba1b-2e93027886ba"),
-                Name = "PETR4",
-                Description = "Petrobras",
-                InitialPrice = 5,
-                CurrentPrice = 5,
-                ExpirationDate = DateTime.Now.AddDays(2),
-                IsActive = true,
-                CreatedDate = DateTime.Now
-            },
-            new Product{
-                Id = Guid.NewGuid(),
-                Name = "VALE3",
-                Description = "Vale",
-                InitialPrice = 10,
-                CurrentPrice = 14,
-                ExpirationDate = DateTime.Now.AddDays(30),
-                IsActive = true,
-                CreatedDate = DateTime.Now
-            },
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "ITIT",
-                Description = "INTER TEVA INDICE DE TIJOLO FUNDO DE INVESTIMENTO",
-                InitialPrice = 40,
-                CurrentPrice = 35,
-                ExpirationDate = DateTime.Now.AddYears(2),
-                IsActive = false,
-                CreatedDate = DateTime.Now
-            },
-            new Product
-            {
-                Id = Guid.NewGuid(),
-                Name = "JASC",
-                Description = "JASC RENDA VAREJO ESSENCIAL FDO DE INV IMOB - FII",
-                InitialPrice = 100,
-                CurrentPrice = 150,
-                ExpirationDate = DateTime.Now.AddYears(-1),
-                IsActive = true,
-                CreatedDate = DateTime.Now
-            }
-        });
+        var jsonCustomers = File.ReadAllText(Path.Combine(filePath, "customers.json"));
+        var customers = JsonConvert.DeserializeObject<List<Customer>>(jsonCustomers);
+
+        var jsonProducts = File.ReadAllText(Path.Combine(filePath, "products.json"));
+        var products = JsonConvert.DeserializeObject<List<Product>>(jsonProducts);
+
+        dbContext.Customers.AddRange(customers);
+        
+        dbContext.Products.AddRange(products);
 
         dbContext.SaveChanges();
 

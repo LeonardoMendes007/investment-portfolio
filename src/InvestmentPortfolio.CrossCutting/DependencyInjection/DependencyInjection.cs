@@ -4,22 +4,21 @@ using InvestmentPortfolio.Application.Mapper.AutoMapperConfig;
 using InvestmentPortfolio.Application.Services;
 using InvestmentPortfolio.Application.Services.Interfaces;
 using InvestmentPortfolio.Application.Validators.Product;
-using InvestmentPortfolio.Domain.Entities.Customer;
 using InvestmentPortfolio.Domain.Interfaces.Repositories;
 using InvestmentPortfolio.Domain.Interfaces.Services;
 using InvestmentPortfolio.Domain.Interfaces.UnitOfWork;
+using InvestmentPortfolio.Infra.Options;
 using InvestmentPortfolio.Infra.Persistence;
 using InvestmentPortfolio.Infra.Persistence.Data;
 using InvestmentPortfolio.Infra.Persistence.Repositories;
 using InvestmentPortfolio.Infra.Persistence.UnitOfWork;
+using InvestmentPortfolio.Infra.Services;
 using InvestmentPortfolio.Job;
 using InvestmentPortfolio.Job.Options;
 using InvestmentPortfolio.Job.Service;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 
 namespace InvestmentPortfolio.CrossCutting.DependencyInjection;
 public static class DependencyInjection

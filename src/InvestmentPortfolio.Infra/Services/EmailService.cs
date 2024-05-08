@@ -1,10 +1,10 @@
-﻿using System.Net.Mail;
-using System.Net;
-using InvestmentPortfolio.Job.Options;
+﻿using InvestmentPortfolio.Domain.Entities.Product;
 using InvestmentPortfolio.Domain.Interfaces.Services;
-using InvestmentPortfolio.Domain.Entities.Product;
+using InvestmentPortfolio.Infra.Options;
+using System.Net;
+using System.Net.Mail;
 
-namespace InvestmentPortfolio.Job.Service;
+namespace InvestmentPortfolio.Infra.Services;
 public class EmailService : IEmailService
 {
     private readonly EmailOptions _emailOptions;
@@ -21,7 +21,7 @@ public class EmailService : IEmailService
             message.From = new MailAddress(_emailOptions.Email);
             message.To.Add(_emailOptions.To);
             message.Subject = $"Faltam {(product.ExpirationDate - DateTime.Now).Days} para o produto de nome {product.Name} expirar.";
-            
+
             message.IsBodyHtml = true;
 
             string basePath = AppDomain.CurrentDomain.BaseDirectory;

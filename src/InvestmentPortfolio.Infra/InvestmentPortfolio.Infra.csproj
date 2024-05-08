@@ -17,6 +17,15 @@
 	  <ProjectReference Include="..\InvestmentPortfolio.Domain\InvestmentPortfolio.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <None Update="Persistence\Data\Mock\customers.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="Persistence\Data\Mock\products.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
 	
 
 </Project>

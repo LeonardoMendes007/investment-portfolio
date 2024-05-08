@@ -24,22 +24,64 @@ public class TransactionQueryHandler : IRequestHandler<GetTransactionByProductQu
 
     public async Task<IPagedList<TransactionDetails>> Handle(GetTransactionByProductQuery request, CancellationToken cancellationToken)
     {
-        var transactionsDetails = await _productService.GetAllTransactionsAsync(request.ProductId);
+        var transactions = await _productService.GetAllTransactionsAsync(request.ProductId);
+
+        var transactionsDetails = transactions
+                    .Select(t => new TransactionDetails
+                    {
+                        Id = t.Id,
+                        ProductId = t.ProductId,
+                        CustomerId = t.CustomerId,
+                        ProductName = t.Product.Name,
+                        PU = t.PU,
+                        Quantity = t.Quantity,
+                        TransactionType = t.TransactionType,
+                        TransactionTypeName = t.TransactionType == 0 ? "Buy" : "Sell",
+                        Date = t.Date
+                    });
 
         return PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, request.Page, request.PageSize);
     }
 
     public async Task<IPagedList<TransactionSummary>> Handle(GetTransactionByCustomerQuery request, CancellationToken cancellationToken)
     {
-        var TransactionsSummary = await _customerService.GetTransactionByQueryAsync(request.CustomerId);
+        var transactions = await _customerService.GetTransactionByQueryAsync(request.CustomerId);
 
-        return PagedList<TransactionSummary>.CreatePagedList(TransactionsSummary, request.Page, request.PageSize);
+        var transactionsSummary = transactions
+           .Select(t => new TransactionSummary
+           {
+               Id = t.Id,
+               ProductId = t.ProductId,
+               CustomerId = t.CustomerId,
+               ProductName = t.Product.Name,
+               TransactionType = t.TransactionType,
+               TransactionTypeName = t.TransactionType == 0 ? "Buy" : "Sell",
+               Amount = t.PU * t.Quantity,
+               Quantity = t.Quantity,
+               Date = t.Date
+           });
+
+        return PagedList<TransactionSummary>.CreatePagedList(transactionsSummary, request.Page, request.PageSize);
 
     }
 
     public async Task<IPagedList<TransactionDetails>> Handle(GetTransactionByCustomerAndProductQuery request, CancellationToken cancellationToken)
     {
-        var transactionsDetails = await _customerService.GetTransactionsByProductAsync(request.CustomerId, request.ProductId);
+        var transactions = await _customerService.GetTransactionsByProductAsync(request.CustomerId, request.ProductId);
+
+        var transactionsDetails = transactions
+            .Select(t => new TransactionDetails
+            {
+                Id = t.Id,
+                ProductId = t.ProductId,
+                CustomerId = t.CustomerId,
+                ProductName = t.Product.Name,
+                PU = t.PU,
+                Quantity = t.Quantity,
+                TransactionType = t.TransactionType,
+                TransactionTypeName = t.TransactionType == 0 ? "Buy" : "Sell",
+                Date = t.Date
+            });
 
         return PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, request.Page, request.PageSize);
     }

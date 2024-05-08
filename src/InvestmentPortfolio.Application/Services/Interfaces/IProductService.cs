@@ -1,14 +1,12 @@
-﻿using InvestmentPortfolio.Application.Pagination.Interface;
-using InvestmentPortfolio.Application.Responses.Details;
-using InvestmentPortfolio.Application.Responses.Summary;
-using InvestmentPortfolio.Domain.Entities.Product;
+﻿using InvestmentPortfolio.Domain.Entities.Product;
+using InvestmentPortfolio.Domain.Entities.Transaction;
 
 namespace InvestmentPortfolio.Application.Services.Interfaces;
 public interface IProductService
 {
-    Task<IQueryable<ProductSummary>> GetAllAsync(bool inactive);
-    Task<ProductDetails> GetByIdAsync(Guid id);
-    Task<IQueryable<TransactionDetails>> GetAllTransactionsAsync(Guid id);
+    Task<Product> GetByIdAsync(Guid id);
+    Task<IQueryable<Product>> GetAllAsync(bool inactive);
+    Task<IQueryable<Transaction>> GetAllTransactionsAsync(Guid id);
     Task<Guid> CreateAsync(Product product);
     Task UpdateAsync(Product product);
 }

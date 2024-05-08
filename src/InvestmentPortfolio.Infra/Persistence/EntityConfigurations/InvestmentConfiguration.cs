@@ -11,7 +11,7 @@ public class InvestmentConfiguration : IEntityTypeConfiguration<Investment>
         builder.Property(x => x.CustomerId).HasColumnName("customerId").HasMaxLength(36).IsRequired();
         builder.Property(x => x.ProductId).HasColumnName("productId").HasMaxLength(36).IsRequired();
         builder.Property(x => x.Quantity).HasColumnName("quantity").IsRequired();
-        builder.Property(x => x.InvestmentAmount).HasColumnName("investment_amount").HasPrecision(10).IsRequired();
+        builder.Property(x => x.InvestmentAmount).HasColumnName("investment_amount").HasPrecision(10, 2).IsRequired();
         
         builder.HasKey(x => new {x.CustomerId, x.ProductId});
 

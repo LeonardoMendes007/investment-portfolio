@@ -20,27 +20,32 @@ public class CustomerServiceTest
     private readonly MockRepository _mockRepository = new MockRepository(MockBehavior.Loose);
 
     private readonly Mock<IUnitOfWork> _mockUnitOfWork;
-    private readonly Mock<IMapper> _mockMapper;
 
     private readonly ICustomerService _customerService;
 
     public CustomerServiceTest()
     {
         _mockUnitOfWork = _mockRepository.Create<IUnitOfWork>();
-        _mockMapper = _mockRepository.Create<IMapper>();
 
-        _customerService = new CustomerService(_mockUnitOfWork.Object, _mockMapper.Object);
+        _customerService = new CustomerService(_mockUnitOfWork.Object);
     }
 
     [Fact]
-    public async Task GetInvestmentByProductAsync_ValidId_ReturnsInvestmentDetails()
+    public async Task GetInvestmentByProductAsync_ValidId_ReturnsInvestment()
     {
         // Arrange
         Guid customerId = Guid.NewGuid();
         Guid productId = Guid.NewGuid();
-        var investmentAmount = 500;
+        var investmentAmount = 75;
         var quantity = 15;
-        var currentAmount = 5;
+        var currentPrice = 5;
+        var currentAmount = currentPrice * quantity;
+
+        var product = new Product
+        {
+            Id = productId,
+            CurrentPrice = 5
+        };
 
         _mockUnitOfWork.Setup(x => x.CustomerRepository.FindInvestimentByProductIdAsync(customerId, productId))
             .ReturnsAsync(
@@ -49,18 +54,10 @@ public class CustomerServiceTest
                     CustomerId = customerId,
                     ProductId = productId,
                     InvestmentAmount = investmentAmount,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    Product = product
                 }
         );
-        _mockMapper
-            .Setup(mapper => mapper.Map<InvestmentDetails>(It.IsAny<Investment>()))
-            .Returns(new InvestmentDetails
-            {
-                ProductId = productId,
-                Quantity = quantity,
-                InvestmentAmount = investmentAmount,
-                CurrentAmount = 5
-            });
 
         // Act
         var result = await _customerService.GetInvestmentByProductAsync(customerId, productId);
@@ -92,7 +89,7 @@ public class CustomerServiceTest
     }
 
     [Fact]
-    public async Task GetInvestmentByQueryAsync_ValidId_ReturnsPagedListOfInvestmentSummary()
+    public async Task GetInvestmentByQueryAsync_ValidId_ReturnsIQueryableInvestment()
     {
         // Arrange
         var customerId = Guid.NewGuid();
@@ -129,7 +126,7 @@ public class CustomerServiceTest
         for (int i = 0; i < result.Count; i++)
         {
             Assert.Equal(investments[i].ProductId, result[i].ProductId);
-            Assert.Equal(investments[i].Product.Name, result[i].ProductName);
+            Assert.Equal(investments[i].Product.Name, result[i].Product.Name);
             Assert.Equal(investments[i].Quantity, result[i].Quantity);
             Assert.Equal(investments[i].InvestmentAmount, result[i].InvestmentAmount);
             Assert.Equal(investments[i].CurrentAmount, result[i].CurrentAmount);
@@ -153,7 +150,7 @@ public class CustomerServiceTest
     }
 
     [Fact]
-    public async Task GetTransactionsByProductAsync_ValidIds_ReturnsPagedListOfTransactionDetails()
+    public async Task GetTransactionsByProductAsync_ValidIds_ReturnsIQueryableTransaction()
     {
         // Arrange
         var customerId = Guid.NewGuid();
@@ -204,7 +201,7 @@ public class CustomerServiceTest
             Assert.Equal(transactions[i].Id, result[i].Id);
             Assert.Equal(transactions[i].ProductId, result[i].ProductId);
             Assert.Equal(transactions[i].CustomerId, result[i].CustomerId);
-            Assert.Equal(transactions[i].Product.Name, result[i].ProductName);
+            Assert.Equal(transactions[i].Product.Name, result[i].Product.Name);
             Assert.Equal(transactions[i].PU, result[i].PU);
             Assert.Equal(transactions[i].Quantity, result[i].Quantity);
             Assert.Equal(transactions[i].TransactionType, result[i].TransactionType);
@@ -255,7 +252,7 @@ public class CustomerServiceTest
     }
 
     [Fact]
-    public async Task GetTransactionByQueryAsync_ValidIds_ReturnsPagedListOfTransactionSummary()
+    public async Task GetTransactionByQueryAsync_ValidIds_ReturnsIQueryableTransaction()
     {
         // Arrange
         var customerId = Guid.NewGuid();
@@ -305,7 +302,7 @@ public class CustomerServiceTest
             Assert.Equal(transactions[i].Id, result[i].Id);
             Assert.Equal(transactions[i].ProductId, result[i].ProductId);
             Assert.Equal(transactions[i].CustomerId, result[i].CustomerId);
-            Assert.Equal(transactions[i].Product.Name, result[i].ProductName);
+            Assert.Equal(transactions[i].Product.Name, result[i].Product.Name);
             Assert.Equal(transactions[i].Amount, result[i].Amount);
             Assert.Equal(transactions[i].Quantity, result[i].Quantity);
             Assert.Equal(transactions[i].TransactionType, result[i].TransactionType);
