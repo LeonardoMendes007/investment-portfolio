@@ -49,12 +49,9 @@ Foi desenvolvido um sistema de gestão de portfólio de investimentos para consu
 ### Pré-requisitos<a id="pre-requisitos"></a>
 
   
-
 Antes de começar, você vai precisar ter instalado em sua máquina a versão 8 do .NET
 
 [.NET 8](https://dotnet.microsoft.com/pt-br/download/dotnet/8.0),
-
-  
 
 Além disto é necessário ter um editor para acompanhar o código, é recomendado o [Visual Studio 2022 ou VsCode](https://visualstudio.microsoft.com/pt-br/downloads/)
 
@@ -95,6 +92,16 @@ Clique  em  "Abrir Com"  e  selecione  a  IDE  de  sua  preferencia.
 Assim  que  a  aplicação  carregar  no  visual  studio,  clique  em  Executar
 
 ````
+
+Caso você queira apenas utilizar a aplicação, pode preferir utilizar a imagem docker em sua última versão da disponível no [Docker Hub](https://hub.docker.com/repository/docker/leonardomendes/investment-portfolio/general)
+
+Para utilizar este método, é necessário ter o Docker instalado previamente e executar o seguinte comando Docker para baixar a imagem da aplicação e executá-la.
+
+````bash
+    docker run -d -p 7200:80 --name investment-portfolio-api leonardomendes/investment-portfolio:latest
+````
+
+
 
 ### 🛠 Utilizando a aplicação<a id="aplicacao"></a>
 
@@ -153,8 +160,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 - [Entity Framework Core](https://learn.microsoft.com/pt-br/ef/core/)
 
-- [JMeter](https://jmeter.apache.org/) 
+- [JMeter](https://jmeter.apache.org/)
 
+- [Docker](https://www.docker.com/)
 
 ### Teste de Carga<a id="carga"></a>
 
