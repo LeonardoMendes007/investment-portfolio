@@ -25,6 +25,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentPortfolio.Applica
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentPortfolio.Infra.Tests", "tests\UnitTests\InvestmentPortfolio.Infra.Tests\InvestmentPortfolio.Infra.Tests.csproj", "{4BCC1C10-E599-41A1-9141-B4E72DE6AF2A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentPortfolio.Domain.Tests", "tests\UnitTests\InvestmentPortfolio.Domain.Tests\InvestmentPortfolio.Domain.Tests.csproj", "{E893AE7F-4799-48BB-A41C-FE2292A4A515}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InvestmentPortfolio.Job.Tests", "tests\UnitTests\InvestmentPortfolio.Job.Tests\InvestmentPortfolio.Job.Tests.csproj", "{C60D9BF6-6296-4238-9CEC-8B1A428503ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +67,14 @@ Global
 		{4BCC1C10-E599-41A1-9141-B4E72DE6AF2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BCC1C10-E599-41A1-9141-B4E72DE6AF2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BCC1C10-E599-41A1-9141-B4E72DE6AF2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E893AE7F-4799-48BB-A41C-FE2292A4A515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E893AE7F-4799-48BB-A41C-FE2292A4A515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E893AE7F-4799-48BB-A41C-FE2292A4A515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E893AE7F-4799-48BB-A41C-FE2292A4A515}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60D9BF6-6296-4238-9CEC-8B1A428503ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C60D9BF6-6296-4238-9CEC-8B1A428503ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C60D9BF6-6296-4238-9CEC-8B1A428503ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C60D9BF6-6296-4238-9CEC-8B1A428503ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +89,8 @@ Global
 		{C99DA00B-895D-4790-9522-CFCB0871B2E5} = {ADE44A0C-D569-4B64-B9E7-07A1BBCD375B}
 		{B7DCF0E4-3DC5-4575-AA34-E19700773B6C} = {C99DA00B-895D-4790-9522-CFCB0871B2E5}
 		{4BCC1C10-E599-41A1-9141-B4E72DE6AF2A} = {C99DA00B-895D-4790-9522-CFCB0871B2E5}
+		{E893AE7F-4799-48BB-A41C-FE2292A4A515} = {C99DA00B-895D-4790-9522-CFCB0871B2E5}
+		{C60D9BF6-6296-4238-9CEC-8B1A428503ED} = {C99DA00B-895D-4790-9522-CFCB0871B2E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49679441-BF4E-4A6D-B4DE-94FCEF73B582}
