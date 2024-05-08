@@ -21,7 +21,7 @@ public class CustomerController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpGet("{id}/investments")]
+    [HttpGet("{id}/investment")]
     [ProducesResponseType<ResponseBase<IPagedList<InvestmentSummary>>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetInvesmentsAsync([FromRoute] Guid id, [FromQuery] PagedListQueryParams pagedListQueryParams)
     {
@@ -39,7 +39,7 @@ public class CustomerController : ControllerBase
         return Ok(ResponseBase<IPagedList<InvestmentSummary>>.ResponseBaseFactory(investments, HttpStatusCode.OK));
     }
 
-    [HttpGet("{id}/investments/{productId}")]
+    [HttpGet("{id}/investment/{productId}")]
     [ProducesResponseType<ResponseBase<InvestmentDetails>>(StatusCodes.Status200OK)]
     public async Task<IActionResult> GetInvesmentsByProductIdAsync([FromRoute] Guid id, [FromRoute] Guid productId)
     {

@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using InvestmentPortfolio.Application.Pagination;
-using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
 using InvestmentPortfolio.Application.Services.Interfaces;
@@ -31,7 +29,7 @@ public class CustomerService : ICustomerService
         return _mapper.Map<InvestmentDetails>(investment);
     }
 
-    public async Task<IPagedList<InvestmentSummary>> GetInvestmentByQueryAsync(Guid id, int page, int pageSize)
+    public async Task<IQueryable<InvestmentSummary>> GetInvestmentByQueryAsync(Guid id)
     {
         if (await _unitOfWork.CustomerRepository.FindByIdAsync(id) is null)
         {
@@ -50,12 +48,10 @@ public class CustomerService : ICustomerService
                 CurrentAmount = t.CurrentAmount
             });
 
-        var pagedListInvestments = PagedList<InvestmentSummary>.CreatePagedList(investmentsSummary, page, pageSize);
-
-        return pagedListInvestments;
+        return investmentsSummary;
     }
 
-    public async Task<IPagedList<TransactionDetails>> GetTransactionsByProductAsync(Guid id, Guid productId, int page, int pageSize)
+    public async Task<IQueryable<TransactionDetails>> GetTransactionsByProductAsync(Guid id, Guid productId)
     {
         if (await _unitOfWork.CustomerRepository.FindByIdAsync(id) is null)
         {
@@ -83,12 +79,10 @@ public class CustomerService : ICustomerService
                 Date = t.Date
             });
 
-        var pagedListTransaction = PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, page, pageSize);
-
-        return pagedListTransaction;
+        return transactionsDetails;
     }
 
-    public async Task<IPagedList<TransactionSummary>> GetTransactionByQueryAsync(Guid id, int page, int pageSize)
+    public async Task<IQueryable<TransactionSummary>> GetTransactionByQueryAsync(Guid id)
     {
         if (await _unitOfWork.CustomerRepository.FindByIdAsync(id) is null)
         {
@@ -111,8 +105,6 @@ public class CustomerService : ICustomerService
                 Date = t.Date
             });
 
-        var pagedListTransaction = PagedList<TransactionSummary>.CreatePagedList(transactionsSummary, page, pageSize);
-
-        return pagedListTransaction;
+        return transactionsSummary;
     }
 }

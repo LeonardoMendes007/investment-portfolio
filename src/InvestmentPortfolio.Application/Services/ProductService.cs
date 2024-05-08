@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using InvestmentPortfolio.Application.Pagination;
-using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
 using InvestmentPortfolio.Application.Services.Interfaces;
@@ -34,20 +32,9 @@ public class ProductService : IProductService
         return product.Id;  
     }
 
-    public async Task<IPagedList<ProductSummary>> GetAllAsync(bool inactive, bool expired, int page, int pageSize)
+    public async Task<IQueryable<ProductSummary>> GetAllAsync(bool inactive)
     {
         var products = _unitOfWork.ProductRepository.FindAll();
-
-        products = products.Where(p => p.IsActive == !inactive);
-
-        if(expired)
-        {
-            products = products.Where(p => p.ExpirationDate < DateTime.Now);
-        }
-        else
-        {
-            products = products.Where(p => p.ExpirationDate > DateTime.Now);
-        }
 
         var productsSummary = products
             .Select(p => new ProductSummary
@@ -57,15 +44,15 @@ public class ProductService : IProductService
                 Description = p.Description,
                 CurrentPrice = p.CurrentPrice,
                 ExpirationDate = p.ExpirationDate,
-                IsActive = p.IsActive
+                IsActive = p.ExpirationDate >= DateTime.Now ? p.IsActive : false
             });
 
-        var pagedListProducts = PagedList<ProductSummary>.CreatePagedList(productsSummary, page, pageSize);
+        productsSummary = productsSummary.Where(p => p.IsActive == !inactive);
 
-        return pagedListProducts;
+        return productsSummary;
     }
 
-    public async Task<IPagedList<TransactionDetails>> GetAllTransactionsAsync(Guid id, int page, int pageSize)
+    public async Task<IQueryable<TransactionDetails>> GetAllTransactionsAsync(Guid id)
     {
         var transactionsQuery = _unitOfWork.ProductRepository.FindAllTransations(id);
 
@@ -86,9 +73,7 @@ public class ProductService : IProductService
                 Date = t.Date
             });
 
-        var pagedListTrasactions = PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, page, pageSize);
-
-        return pagedListTrasactions;
+        return transactionsDetails;
     }
 
     public async Task<ProductDetails> GetByIdAsync(Guid id)
@@ -106,8 +91,8 @@ public class ProductService : IProductService
     public async Task UpdateAsync(Product product)
     {
         var productPersistence = await _unitOfWork.ProductRepository.FindByIdAsync(product.Id);
-
-        if (await _unitOfWork.ProductRepository.FindByNameAsync(product.Name) is not null)
+        
+        if (!productPersistence.Name.Equals(product.Name) && (await _unitOfWork.ProductRepository.FindByNameAsync(product.Name)) is not null)
         {
             throw new ResourceAlreadyExistsException($"Product already exists with Name = {product.Name}.");
         }

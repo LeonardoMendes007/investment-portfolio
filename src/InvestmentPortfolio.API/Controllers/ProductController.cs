@@ -8,10 +8,8 @@ using InvestmentPortfolio.Application.Queries.Product;
 using InvestmentPortfolio.Application.Queries.Transaction;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
-using InvestmentPortfolio.Domain.Entities.Product;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 
 namespace InvestmentPortfolio.API.Controllers;
@@ -48,7 +46,6 @@ public class ProductController : ControllerBase
         var getMoviesQuery = new GetProductQuery()
         {
             Inactive = getProductsQueryParams.Inactive,
-            Expired = getProductsQueryParams.Expired,
             Page = getProductsQueryParams.Page,
             PageSize = getProductsQueryParams.PageSize
         };
@@ -96,14 +93,15 @@ public class ProductController : ControllerBase
         return CreatedAtRoute("GetById", new { id = productId }, ResponseBase.ResponseBaseFactory(HttpStatusCode.Created));
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     [ProducesResponseType<ResponseBase>(StatusCodes.Status200OK)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateAsync([FromBody] UpdateProductRequest productRequest)
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] UpdateProductRequest productRequest)
     {
 
         var updateProductCommand = new UpdateProductCommand()
         {
+            Id = id,
             Name = productRequest.Name,
             InitialPrice = productRequest.InitialPrice,
             CurrentPrice = productRequest.CurrentPrice,

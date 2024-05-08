@@ -1,11 +1,8 @@
 ﻿using InvestmentPortfolio.Application.Services.Interfaces;
-using InvestmentPortfolio.Domain.Entities.Customer;
 using InvestmentPortfolio.Domain.Entities.Investment;
-using InvestmentPortfolio.Domain.Entities.Product;
 using InvestmentPortfolio.Domain.Entities.Transaction;
 using InvestmentPortfolio.Domain.Exceptions;
 using InvestmentPortfolio.Domain.Interfaces.UnitOfWork;
-using MediatR;
 
 namespace InvestmentPortfolio.Application.Services;
 public class InvestmentService : IInvestmentService
@@ -17,16 +14,16 @@ public class InvestmentService : IInvestmentService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Investment> BuyInvestment(Transaction transaction)
+    public async Task<Investment> BuyInvestmentAsync(Transaction transaction)
     {
         if (!transaction.Product.IsActive)
         {
-            throw new ProductIsInativeException(transaction.Product.Id);
+            throw new ProductIsInativeException(transaction.ProductId);
         }
 
         if (transaction.Product.ExpirationDate < DateTime.Now)
         {
-            throw new ProductIsInativeException(transaction.Product.Id);
+            throw new ProductIsInativeException(transaction.ProductId);
         }
 
         transaction.Customer.Debit((transaction.Product.CurrentPrice * transaction.Quantity));
@@ -50,13 +47,13 @@ public class InvestmentService : IInvestmentService
         return investment;
     }
 
-    public async Task<Investment> SellInvestment(Transaction transaction)
+    public async Task<Investment> SellInvestmentAsync(Transaction transaction)
     {
         var investment = await _unitOfWork.CustomerRepository.FindInvestimentByProductIdAsync(transaction.CustomerId, transaction.ProductId);
 
         if (investment is null)
         {
-            throw new ResourceNotFoundException(investment.ProductId, $"The customer does not own the product with id = {transaction.ProductId}");
+            throw new InvalidOperationException($"The customer does not own the product with id = {transaction.ProductId}");
         }
 
         if (investment.Quantity < transaction.Quantity)

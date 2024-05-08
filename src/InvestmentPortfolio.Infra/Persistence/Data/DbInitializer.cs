@@ -37,7 +37,7 @@ public static class DbInitializer
         dbContext.Products.AddRange(new List<Product>
         {
             new Product{
-                Id = Guid.NewGuid(),
+                Id = Guid.Parse("e4ac953c-ab3c-4660-ba1b-2e93027886ba"),
                 Name = "PETR4",
                 Description = "Petrobras",
                 InitialPrice = 5,

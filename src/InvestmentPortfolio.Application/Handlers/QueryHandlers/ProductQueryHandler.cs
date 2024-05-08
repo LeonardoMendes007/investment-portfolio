@@ -1,4 +1,5 @@
-﻿using InvestmentPortfolio.Application.Pagination.Interface;
+﻿using InvestmentPortfolio.Application.Pagination;
+using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Queries.Product;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
@@ -18,7 +19,9 @@ public class ProductQueryHandler : IRequestHandler<GetProductQuery, IPagedList<P
 
     public async Task<IPagedList<ProductSummary>> Handle(GetProductQuery request, CancellationToken cancellationToken)
     {
-        return await _productService.GetAllAsync(request.Inactive, request.Expired, request.Page, request.PageSize);
+        var productsSummary = await _productService.GetAllAsync(request.Inactive);
+
+        return PagedList<ProductSummary>.CreatePagedList(productsSummary, request.Page, request.PageSize);
     }
 
     public async Task<ProductDetails> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)

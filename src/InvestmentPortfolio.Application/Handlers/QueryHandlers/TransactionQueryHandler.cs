@@ -1,4 +1,5 @@
-﻿using InvestmentPortfolio.Application.Pagination.Interface;
+﻿using InvestmentPortfolio.Application.Pagination;
+using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Queries.Transaction;
 using InvestmentPortfolio.Application.Queries.Transactions;
 using InvestmentPortfolio.Application.Responses.Details;
@@ -23,18 +24,23 @@ public class TransactionQueryHandler : IRequestHandler<GetTransactionByProductQu
 
     public async Task<IPagedList<TransactionDetails>> Handle(GetTransactionByProductQuery request, CancellationToken cancellationToken)
     {
-        return await _productService.GetAllTransactionsAsync(request.ProductId, request.Page, request.PageSize);
+        var transactionsDetails = await _productService.GetAllTransactionsAsync(request.ProductId);
+
+        return PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, request.Page, request.PageSize);
     }
 
     public async Task<IPagedList<TransactionSummary>> Handle(GetTransactionByCustomerQuery request, CancellationToken cancellationToken)
     {
-        return await _customerService.GetTransactionByQueryAsync(request.CustomerId, request.Page, request.PageSize);
+        var TransactionsSummary = await _customerService.GetTransactionByQueryAsync(request.CustomerId);
+
+        return PagedList<TransactionSummary>.CreatePagedList(TransactionsSummary, request.Page, request.PageSize);
+
     }
 
-    public Task<IPagedList<TransactionDetails>> Handle(GetTransactionByCustomerAndProductQuery request, CancellationToken cancellationToken)
+    public async Task<IPagedList<TransactionDetails>> Handle(GetTransactionByCustomerAndProductQuery request, CancellationToken cancellationToken)
     {
-        return _customerService.GetTransactionsByProductAsync(request.CustomerId, request.ProductId, request.Page, request.PageSize);
-    }
+        var transactionsDetails = await _customerService.GetTransactionsByProductAsync(request.CustomerId, request.ProductId);
 
-   
+        return PagedList<TransactionDetails>.CreatePagedList(transactionsDetails, request.Page, request.PageSize);
+    }
 }

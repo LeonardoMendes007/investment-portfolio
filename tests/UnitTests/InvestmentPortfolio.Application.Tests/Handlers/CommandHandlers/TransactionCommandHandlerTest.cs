@@ -64,7 +64,7 @@ public class TransactionCommandHandlerTest
             .ReturnsAsync(transaction);
 
         _mockInvestmentService
-            .Setup(service => service.BuyInvestment(It.IsAny<Transaction>()));
+            .Setup(service => service.BuyInvestmentAsync(It.IsAny<Transaction>()));
 
         // Act
         var actual = await transactionCommandHandler.Handle(transactionBuyCommand, CancellationToken.None);
@@ -101,7 +101,7 @@ public class TransactionCommandHandlerTest
             .ReturnsAsync(transaction);
 
         _mockInvestmentService
-            .Setup(service => service.BuyInvestment(It.IsAny<Transaction>()));
+            .Setup(service => service.BuyInvestmentAsync(It.IsAny<Transaction>()));
 
         // Act
         var actual = await transactionCommandHandler.Handle(transactionSellCommand, CancellationToken.None);

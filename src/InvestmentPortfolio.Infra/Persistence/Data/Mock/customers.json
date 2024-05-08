@@ -1,0 +1,38 @@
+[
+  {
+    "id": "e4ac953c-ab3c-4660-ba1b-2e93027886ba",
+    "name": "PETR4",
+    "description": "Petrobras",
+    "initialPrice": 5,
+    "currentPrice": 5,
+    "expirationDate": "2024-05-10T00:36:36.3549067-03:00",
+    "isActive": true
+  },
+  {
+    "id": "1cba1aa2-fbd0-41e1-8bca-692bb7b4add1",
+    "name": "VALE3",
+    "description": "Vale",
+    "initialPrice": 10,
+    "currentPrice": 14,
+    "expirationDate": "2024-06-07T00:36:36.3550809-03:00",
+    "isActive": true
+  },
+  {
+    "id": "d44f5377-dd72-41f0-9a7b-721048141013",
+    "name": "JASC",
+    "description": "JASC RENDA VAREJO ESSENCIAL FDO DE INV IMOB - FII",
+    "initialPrice": 100,
+    "currentPrice": 150,
+    "expirationDate": "2023-05-08T00:36:36.3551024-03:00",
+    "isActive": true
+  },
+  {
+    "id": "8fb8983b-a38c-43c9-80c5-e0188d965a29",
+    "name": "ITIT",
+    "description": "INTER TEVA INDICE DE TIJOLO FUNDO DE INVESTIMENTO",
+    "initialPrice": 40,
+    "currentPrice": 35,
+    "expirationDate": "2026-05-08T00:36:36.3550819-03:00",
+    "isActive": false
+  }
+]

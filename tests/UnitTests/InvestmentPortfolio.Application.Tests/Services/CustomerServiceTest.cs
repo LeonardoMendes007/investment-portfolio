@@ -96,8 +96,7 @@ public class CustomerServiceTest
     {
         // Arrange
         var customerId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
+
         var investments = new List<Investment>
         {
             new Investment
@@ -123,22 +122,17 @@ public class CustomerServiceTest
             .Returns(investments.AsQueryable());
 
         // Act
-        var result = await _customerService.GetInvestmentByQueryAsync(customerId, page, pageSize);
+        var result = (await _customerService.GetInvestmentByQueryAsync(customerId)).ToList();
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(investments.Count, result.TotalCount);
-        Assert.Equal(page, result.Page);
-        Assert.Equal(pageSize, result.PageSize);
-
-        Assert.NotNull(result.Items);
-        for (int i = 0; i < result.Items.Count; i++)
+        for (int i = 0; i < result.Count; i++)
         {
-            Assert.Equal(investments[i].ProductId, result.Items[i].ProductId);
-            Assert.Equal(investments[i].Product.Name, result.Items[i].ProductName);
-            Assert.Equal(investments[i].Quantity, result.Items[i].Quantity);
-            Assert.Equal(investments[i].InvestmentAmount, result.Items[i].InvestmentAmount);
-            Assert.Equal(investments[i].CurrentAmount, result.Items[i].CurrentAmount);
+            Assert.Equal(investments[i].ProductId, result[i].ProductId);
+            Assert.Equal(investments[i].Product.Name, result[i].ProductName);
+            Assert.Equal(investments[i].Quantity, result[i].Quantity);
+            Assert.Equal(investments[i].InvestmentAmount, result[i].InvestmentAmount);
+            Assert.Equal(investments[i].CurrentAmount, result[i].CurrentAmount);
         }
     }
 
@@ -147,8 +141,6 @@ public class CustomerServiceTest
     {
         // Arrange
         var customerId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
 
         _mockUnitOfWork.Setup(x => x.CustomerRepository.FindByIdAsync(customerId));
 
@@ -156,7 +148,7 @@ public class CustomerServiceTest
         await Assert.ThrowsAsync<ResourceNotFoundException>(async () =>
         {
             // Act
-            await _customerService.GetInvestmentByQueryAsync(customerId, page, pageSize);
+            await _customerService.GetInvestmentByQueryAsync(customerId);
         });
     }
 
@@ -166,8 +158,7 @@ public class CustomerServiceTest
         // Arrange
         var customerId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
+
         var transactions = new List<Transaction>
         {
             new Transaction
@@ -204,26 +195,20 @@ public class CustomerServiceTest
             .Returns(transactions.AsQueryable());
 
         // Act
-        var result = await _customerService.GetTransactionsByProductAsync(customerId, productId, page, pageSize);
+        var result = (await _customerService.GetTransactionsByProductAsync(customerId, productId)).ToList();
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(transactions.Count, result.TotalCount); 
-        Assert.Equal(page, result.Page);
-        Assert.Equal(pageSize, result.PageSize);
-
-
-        Assert.NotNull(result.Items);
-        for (int i = 0; i < result.Items.Count; i++)
+        for (int i = 0; i < result.Count; i++)
         {
-            Assert.Equal(transactions[i].Id, result.Items[i].Id);
-            Assert.Equal(transactions[i].ProductId, result.Items[i].ProductId);
-            Assert.Equal(transactions[i].CustomerId, result.Items[i].CustomerId);
-            Assert.Equal(transactions[i].Product.Name, result.Items[i].ProductName);
-            Assert.Equal(transactions[i].PU, result.Items[i].PU);
-            Assert.Equal(transactions[i].Quantity, result.Items[i].Quantity);
-            Assert.Equal(transactions[i].TransactionType, result.Items[i].TransactionType);
-            Assert.Equal(transactions[i].Date, result.Items[i].Date);
+            Assert.Equal(transactions[i].Id, result[i].Id);
+            Assert.Equal(transactions[i].ProductId, result[i].ProductId);
+            Assert.Equal(transactions[i].CustomerId, result[i].CustomerId);
+            Assert.Equal(transactions[i].Product.Name, result[i].ProductName);
+            Assert.Equal(transactions[i].PU, result[i].PU);
+            Assert.Equal(transactions[i].Quantity, result[i].Quantity);
+            Assert.Equal(transactions[i].TransactionType, result[i].TransactionType);
+            Assert.Equal(transactions[i].Date, result[i].Date);
         }
     }
 
@@ -233,8 +218,6 @@ public class CustomerServiceTest
         // Arrange
         var customerId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
 
         _mockUnitOfWork.Setup(x => x.CustomerRepository.FindByIdAsync(customerId));
 
@@ -245,7 +228,7 @@ public class CustomerServiceTest
         await Assert.ThrowsAsync<ResourceNotFoundException>(async () =>
         {
             // Act
-            await _customerService.GetTransactionsByProductAsync(customerId, productId, page, pageSize);
+            await _customerService.GetTransactionsByProductAsync(customerId, productId);
         });
 
     }
@@ -256,8 +239,6 @@ public class CustomerServiceTest
         // Arrange
         var customerId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
 
         _mockUnitOfWork.Setup(x => x.CustomerRepository.FindByIdAsync(customerId))
             .ReturnsAsync(new Customer());
@@ -268,7 +249,7 @@ public class CustomerServiceTest
         await Assert.ThrowsAsync<ResourceNotFoundException>(async () =>
         {
             // Act
-            await _customerService.GetTransactionsByProductAsync(customerId, productId, page, pageSize);
+            await _customerService.GetTransactionsByProductAsync(customerId, productId);
         });
 
     }
@@ -279,8 +260,7 @@ public class CustomerServiceTest
         // Arrange
         var customerId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
+
         var transactions = new List<Transaction>
         {
             new Transaction
@@ -314,25 +294,22 @@ public class CustomerServiceTest
             .Returns(transactions.AsQueryable());
 
         // Act
-        var result = await _customerService.GetTransactionByQueryAsync(customerId, page, pageSize);
+        var result = (await _customerService.GetTransactionByQueryAsync(customerId)).ToList();
 
         // Assert
         Assert.NotNull(result);
-        Assert.Equal(transactions.Count, result.TotalCount);
-        Assert.Equal(page, result.Page);
-        Assert.Equal(pageSize, result.PageSize);
 
-        Assert.NotNull(result.Items);
-        for (int i = 0; i < result.Items.Count; i++)
+        Assert.NotNull(result);
+        for (int i = 0; i < result.Count; i++)
         {
-            Assert.Equal(transactions[i].Id, result.Items[i].Id);
-            Assert.Equal(transactions[i].ProductId, result.Items[i].ProductId);
-            Assert.Equal(transactions[i].CustomerId, result.Items[i].CustomerId);
-            Assert.Equal(transactions[i].Product.Name, result.Items[i].ProductName);
-            Assert.Equal(transactions[i].Amount, result.Items[i].Amount);
-            Assert.Equal(transactions[i].Quantity, result.Items[i].Quantity);
-            Assert.Equal(transactions[i].TransactionType, result.Items[i].TransactionType);
-            Assert.Equal(transactions[i].Date, result.Items[i].Date);
+            Assert.Equal(transactions[i].Id, result[i].Id);
+            Assert.Equal(transactions[i].ProductId, result[i].ProductId);
+            Assert.Equal(transactions[i].CustomerId, result[i].CustomerId);
+            Assert.Equal(transactions[i].Product.Name, result[i].ProductName);
+            Assert.Equal(transactions[i].Amount, result[i].Amount);
+            Assert.Equal(transactions[i].Quantity, result[i].Quantity);
+            Assert.Equal(transactions[i].TransactionType, result[i].TransactionType);
+            Assert.Equal(transactions[i].Date, result[i].Date);
         }
     }
 
@@ -342,8 +319,6 @@ public class CustomerServiceTest
         // Arrange
         var customerId = Guid.NewGuid();
         var productId = Guid.NewGuid();
-        var page = 1;
-        var pageSize = 30;
 
         _mockUnitOfWork.Setup(x => x.CustomerRepository.FindByIdAsync(customerId));
 
@@ -351,7 +326,7 @@ public class CustomerServiceTest
         await Assert.ThrowsAsync<ResourceNotFoundException>(async () =>
         {
             // Act
-            await _customerService.GetTransactionByQueryAsync(customerId, page, pageSize);
+            await _customerService.GetTransactionByQueryAsync(customerId);
         });
 
     }

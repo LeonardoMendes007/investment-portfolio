@@ -1,4 +1,5 @@
-﻿using InvestmentPortfolio.Application.Pagination.Interface;
+﻿using InvestmentPortfolio.Application.Pagination;
+using InvestmentPortfolio.Application.Pagination.Interface;
 using InvestmentPortfolio.Application.Queries.Investments;
 using InvestmentPortfolio.Application.Responses.Details;
 using InvestmentPortfolio.Application.Responses.Summary;
@@ -18,11 +19,15 @@ public class InvestmentQueryHandler : IRequestHandler<GetInvestmentQuery, IPaged
 
     public async Task<IPagedList<InvestmentSummary>> Handle(GetInvestmentQuery request, CancellationToken cancellationToken)
     {
-        return await _customerService.GetInvestmentByQueryAsync(request.CustomerId, request.Page, request.PageSize);
+        var investmentsSummary =  await _customerService.GetInvestmentByQueryAsync(request.CustomerId);
+
+        return PagedList<InvestmentSummary>.CreatePagedList(investmentsSummary, request.Page, request.PageSize);
     }
 
     public async Task<InvestmentDetails> Handle(GetInvestmentByProductQuery request, CancellationToken cancellationToken)
     {
         return await _customerService.GetInvestmentByProductAsync(request.CustomerId, request.ProductId);
+
+
     }
 }
