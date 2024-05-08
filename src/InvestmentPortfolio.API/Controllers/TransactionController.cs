@@ -19,6 +19,8 @@ public class TransactionController : ControllerBase
 
     [HttpPost("api/transaction/buy")]
     [ProducesResponseType<ResponseBase<Guid>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> BuyAsync([FromBody] TransactionRequest transactionRequest)
     {
@@ -36,6 +38,8 @@ public class TransactionController : ControllerBase
 
     [HttpPost("api/transaction/sell")]
     [ProducesResponseType<ResponseBase<Guid>>(StatusCodes.Status200OK)]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status404NotFound)]
+    [ProducesResponseType<ResponseBase>(StatusCodes.Status400BadRequest)]
     [ProducesResponseType<ProblemDetails>(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> SellAsync([FromBody] TransactionRequest transactionRequest)
     {

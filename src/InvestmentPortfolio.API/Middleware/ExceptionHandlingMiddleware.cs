@@ -42,8 +42,7 @@ public class ExceptionHandlingMiddleware
 
             await WriteResponseAsync(context, problemDetails, HttpStatusCode.BadRequest);
         }
-        catch (Exception ex) when (ex is ProductIsInativeException || 
-                                   ex is ResourceNotFoundException || 
+        catch (Exception ex) when (ex is ProductIsInativeException ||  
                                    ex is InvalidOperationException || 
                                    ex is ResourceAlreadyExistsException ||
                                    ex is ProductExpiredException)
@@ -51,6 +50,15 @@ public class ExceptionHandlingMiddleware
             _logger.LogWarning(ex.Message);
 
             var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.BadRequest, ex.Message);
+
+            await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.BadRequest);
+
+        }
+        catch (ResourceNotFoundException ex)
+        {
+            _logger.LogWarning(ex.Message);
+
+            var response = ResponseBase.ResponseBaseFactory(HttpStatusCode.NotFound, ex.Message);
 
             await WriteResponseAsync<ResponseBase>(context, response, HttpStatusCode.NotFound);
 

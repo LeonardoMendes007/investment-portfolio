@@ -52,6 +52,11 @@ public class ProductService : IProductService
     {
         var productPersistence = await _unitOfWork.ProductRepository.FindByIdAsync(product.Id);
 
+        if (productPersistence is null)
+        {
+            throw new ResourceNotFoundException(product.Id);
+        }
+
         if (!productPersistence.Name.Equals(product.Name) && (await _unitOfWork.ProductRepository.FindByNameAsync(product.Name)) is not null)
         {
             throw new ResourceAlreadyExistsException($"Product already exists with Name = {product.Name}.");

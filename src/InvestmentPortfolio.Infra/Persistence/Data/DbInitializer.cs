@@ -11,7 +11,7 @@ public static class DbInitializer
         var dbContext = provider.GetService<InvestimentPortfolioDbContext>();
 
         string basePath = AppDomain.CurrentDomain.BaseDirectory;
-        string filePath = Path.Combine(basePath, @"Persistence\Data\Mock");
+        string filePath = Path.Combine(basePath, "Persistence", "Data","Mock");
 
         var jsonCustomers = File.ReadAllText(Path.Combine(filePath, "customers.json"));
         var customers = JsonConvert.DeserializeObject<List<Customer>>(jsonCustomers);

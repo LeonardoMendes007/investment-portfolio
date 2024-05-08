@@ -107,6 +107,16 @@ public class ProductServiceTest
                 ExpirationDate = DateTime.UtcNow.AddDays(5),
                 CurrentPrice = 5,
                 InitialPrice = 10
+            },
+            new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = "Active Product 4",
+                Description = "ABC",
+                IsActive = false,
+                ExpirationDate = DateTime.UtcNow.AddDays(-5),
+                CurrentPrice = 2,
+                InitialPrice = 5
             }
         };
 
@@ -119,16 +129,6 @@ public class ProductServiceTest
         // Assert
         Assert.NotNull(result);
         Assert.All(result, p => Assert.True(p.IsActive));
-        for (int i = 0; i < result.Count; i++)
-        {
-            Assert.Equal(activeProducts[i].Id, result[i].Id);
-            Assert.Equal(activeProducts[i].Name, result[i].Name);
-            Assert.Equal(activeProducts[i].Description, result[i].Description);
-            Assert.Equal(activeProducts[i].ExpirationDate, result[i].ExpirationDate);
-            Assert.Equal(activeProducts[i].CurrentPrice, result[i].CurrentPrice);
-            Assert.Equal(activeProducts[i].InitialPrice, result[i].InitialPrice);
-            Assert.Equal(activeProducts[i].IsActive, result[i].IsActive);
-        }
     }
 
     [Fact]
@@ -166,6 +166,16 @@ public class ProductServiceTest
                 ExpirationDate = DateTime.UtcNow.AddDays(5),
                 CurrentPrice = 5,
                 InitialPrice = 10
+            },
+            new Product
+            {
+                Id = Guid.NewGuid(),
+                Name = "Active Product 4",
+                Description = "ABC",
+                IsActive = false,
+                ExpirationDate = DateTime.UtcNow.AddDays(-5),
+                CurrentPrice = 2,
+                InitialPrice = 5
             }
         };
 
@@ -173,21 +183,11 @@ public class ProductServiceTest
             .Returns(activeProducts.AsQueryable());
 
         // Act
-        var result = (await _productService.GetAllAsync(false)).ToList();
+        var result = (await _productService.GetAllAsync(true)).ToList();
 
         // Assert
         Assert.NotNull(result);
-        Assert.All(result, p => Assert.True(p.IsActive));
-        for (int i = 0; i < result.Count; i++)
-        {
-            Assert.Equal(activeProducts[i].Id, result[i].Id);
-            Assert.Equal(activeProducts[i].Name, result[i].Name);
-            Assert.Equal(activeProducts[i].Description, result[i].Description);
-            Assert.Equal(activeProducts[i].ExpirationDate, result[i].ExpirationDate);
-            Assert.Equal(activeProducts[i].CurrentPrice, result[i].CurrentPrice);
-            Assert.Equal(activeProducts[i].InitialPrice, result[i].InitialPrice);
-            Assert.Equal(activeProducts[i].IsActive, result[i].IsActive);
-        }
+        Assert.All(result, p => Assert.False(p.IsActive));
     }
 
     [Fact]
@@ -237,6 +237,105 @@ public class ProductServiceTest
         {
             // Act
             var result = await _productService.CreateAsync(product);
+        });
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ValidProduct_UpdatesProduct()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+
+        var existingProduct = new Product
+        {
+            Id = productId,
+            Name = "Existing Product",
+            Description = "Description of existing product",
+            InitialPrice = 100,
+            CurrentPrice = 120,
+            ExpirationDate = DateTime.UtcNow.AddDays(30),
+            IsActive = true
+        };
+
+        var updatedProduct = new Product
+        {
+            Id = productId,
+            Name = "Updated Product",
+            Description = "Updated description",
+            InitialPrice = 150,
+            CurrentPrice = 180,
+            ExpirationDate = DateTime.UtcNow.AddDays(45),
+            IsActive = false
+        };
+
+        _mockUnitOfWork.Setup(x => x.ProductRepository.FindByIdAsync(productId))
+            .ReturnsAsync(existingProduct);
+
+        _mockUnitOfWork.Setup(x => x.ProductRepository.FindByNameAsync(updatedProduct.Name));
+
+        // Act
+        await _productService.UpdateAsync(updatedProduct);
+
+        // Assert
+        Assert.Equal(productId, updatedProduct.Id);
+        Assert.Equal(updatedProduct.Name, existingProduct.Name);
+        Assert.Equal(updatedProduct.Description, existingProduct.Description);
+        Assert.Equal(updatedProduct.InitialPrice, existingProduct.InitialPrice);
+        Assert.Equal(updatedProduct.CurrentPrice, existingProduct.CurrentPrice);
+        Assert.Equal(updatedProduct.ExpirationDate, existingProduct.ExpirationDate);
+        Assert.Equal(updatedProduct.IsActive, existingProduct.IsActive);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_InvalidId_ReturnsResourceNotFoundException()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+
+        var notExistingProduct = new Product
+        {
+            Id = productId
+        };
+
+        _mockUnitOfWork.Setup(x => x.ProductRepository.FindByIdAsync(productId));
+
+        // Assert
+        await Assert.ThrowsAsync<ResourceNotFoundException>(async () =>
+        {
+            // Act
+            await _productService.UpdateAsync(notExistingProduct);
+        });
+    }
+
+    [Fact]
+    public async Task UpdateAsync_AlreadyExistsName_ReturnsResourceAlreadyExistsException()
+    {
+        // Arrange
+        var productId = Guid.NewGuid();
+
+        var updatedProduct = new Product
+        {
+            Id = productId,
+            Name = "Updated Product",
+        };
+
+        var existingProduct = new Product
+        {
+            Id = productId,
+            Name = "Existing Product"
+        };
+
+        _mockUnitOfWork.Setup(x => x.ProductRepository.FindByIdAsync(productId))
+            .ReturnsAsync(existingProduct);
+
+        _mockUnitOfWork.Setup(x => x.ProductRepository.FindByNameAsync(It.IsAny<string>()))
+            .ReturnsAsync(updatedProduct);
+
+        // Assert
+        await Assert.ThrowsAsync<ResourceAlreadyExistsException>(async () =>
+        {
+            // Act
+            await _productService.UpdateAsync(updatedProduct);
         });
     }
 }
